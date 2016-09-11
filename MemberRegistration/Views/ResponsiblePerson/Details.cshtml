@@ -1,0 +1,33 @@
+﻿@model MemberRegistration.ViewModels.ResponsiblePersonViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div>
+    <h4><span class="glyphicon glyphicon-tower"></span> Odgovorna osoba</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Uredi", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Natrag na listu", "Index")
+</p>

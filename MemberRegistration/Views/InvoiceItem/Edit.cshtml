@@ -1,0 +1,153 @@
+﻿@model MemberRegistration.ViewModels.InvoiceItemViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Uredi stavku</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.InvoiceId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductId, "Proizvod", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ProductId", null, htmlAttributes: new { @class = "form-control", @id = "ProductSelectListId" })
+                @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Year", null, String.Empty, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.MemberId, "Član", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("MemberId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MemberId, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberId, "Član", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MemberId, new { htmlAttributes = new { @id = "MemberSelect", @style = "width:280px" } })
+                @Html.ValidationMessageFor(model => model.MemberId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CurrencyUnit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.CurrencyUnit, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CurrencyUnit, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @id = "kolicinaId" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control", @id = "vrijednostId", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Spremi" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="@Url.Action("Details", "Invoice", new { id = Model.InvoiceId })">Natrag na listu</a>
+</div>
+
+
+<script type="text/javascript">
+
+    function ProductOnloadValues() {
+        var Product = {};
+        Product.Id = $("#ProductSelectListId").val();
+
+        $.ajax({
+            url: '@Url.Action("PopulateProduct", "Invoice")',
+            type: "POST",
+            dataType: "json",
+            data: { id: Product.Id },
+            success: function (data) {
+                $("#kolicinaId").val(1);
+                $("#vrijednostId").val(data.Price);
+            }
+        });
+    }
+
+    $(function () {
+
+        $('#ProductSelectListId').change(function () {
+            ProductOnloadValues();
+        });
+    });
+
+    $('#kolicinaId').change(function () {
+
+        var kolicina = $(this).val();
+
+        var Product = {};
+        Product.Id = $("#ProductSelectListId").val();
+
+        $.ajax({
+            url: '@Url.Action("PopulateProduct", "Invoice")',
+            type: "POST",
+            dataType: "json",
+            data: { id: Product.Id },
+            success: function (data) {
+
+                $("#vrijednostId").val(data.Price * kolicina);
+            }
+        });
+
+    });
+
+    window.onload = ProductOnloadValues();
+
+
+    // Select2 dropdown
+    $('#MemberSelect').select2({
+        placeholder: 'Odaberite člana',
+        ajax: {
+            url: '@Url.Action("SearchMember", "Member")',
+            dataType: 'json',
+            data: function (term, page) {
+                return {
+                    searchTerm: term
+                };
+            },
+            results: function (data, page) {
+                return { results: data };
+            }
+        }
+    });
+
+</script>

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MemberRegistration.ViewModels.ResponsiblePersonViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4><span class="glyphicon glyphicon-tower"></span> Odgovorne osobe</h4>
+
+<p>
+    @Html.ActionLink("Kreiraj odgovornu osobu", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.ActionLink("Uredi", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Detalji", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Obriši", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

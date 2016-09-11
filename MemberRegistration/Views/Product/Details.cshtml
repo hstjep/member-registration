@@ -1,0 +1,41 @@
+﻿@model MemberRegistration.ViewModels.ProductViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div>
+    <h4><span class="glyphicon glyphicon-shopping-cart"></span> Proizvod</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MeasuringUnit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MeasuringUnit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Uredi", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Natrag na listu", "Index")
+</p>

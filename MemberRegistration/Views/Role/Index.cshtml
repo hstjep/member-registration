@@ -1,0 +1,33 @@
+﻿@*@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>*@
+@model IEnumerable<MemberRegistration.Models.CustomRole>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+<h4><span class="glyphicon glyphicon-film"></span> Uloge</h4>
+<p>
+    @Html.ActionLink("Kreiraj ulogu", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Uredi", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Obriši", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Natrag na korisničke račune", "Index", "User")
+</p>

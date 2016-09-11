@@ -1,0 +1,156 @@
+﻿@model MemberRegistration.ViewModels.MemberViewModel
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+@if (Request.IsAuthenticated)
+{
+    <div>
+        <h4><span class="glyphicon glyphicon-user"></span> Profil</h4>
+        <hr />
+        <h4><span class="glyphicon glyphicon-pencil"></span> Osnovni podaci</h4>
+
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OIB)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.OIB)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BirthPlace)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.BirthPlace)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </dt>
+            <dd>
+                @Html.ValueFor(model => model.BirthDate, "{0:dd.MM.yyyy.}")
+            </dd>
+        </dl>
+        <hr />
+
+        <h4><span class="glyphicon glyphicon-envelope"></span> Podaci za kontakt</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Place) prebivališta
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Place)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PostalCode)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PostalCode)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.WebSite)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.WebSite)
+            </dd>
+
+        </dl>
+        <hr />
+        <h4><span class="glyphicon glyphicon-briefcase"></span> Posao</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.CurrentEmployment)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CurrentEmployment)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.AreaOfInterest)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AreaOfInterest)
+            </dd>
+
+        </dl>
+        <hr />
+        <h4><span class="glyphicon glyphicon-plus-sign"></span> Udruga</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.MembershipNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MembershipNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.MembershipDate)
+            </dt>
+            <dd>
+                @Html.ValueFor(model => model.MembershipDate, "{0:dd.MM.yyyy.}")
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        <a href="@Url.Action("Edit", "Profile", new { id = ViewBag.UMemberId })">Uredi</a> |
+        @Html.ActionLink("Natrag na početnu", "Index", "Home")
+    </p>
+
+}
+else
+{
+    <div class="box">
+        @Html.Partial("_Login")
+    </div>
+}

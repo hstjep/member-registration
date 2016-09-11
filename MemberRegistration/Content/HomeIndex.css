@@ -1,0 +1,32 @@
+﻿body {
+    background-color: #F0F0F0;
+}
+
+.box {
+    padding-top:5px;
+    padding-bottom:10px;
+    padding-left:20px;
+    background-color:white;
+    width:400px;
+    margin:0 auto;
+}
+
+.imgBox {
+    width:400px;
+    margin:0 auto;
+    padding-bottom:10px; 
+}
+
+.homeImg {
+    height:100%;
+    width:100%;       
+}
+
+h3 {
+    color: #3366FF;
+}
+
+.titleLine {
+    width:350px;
+}
+

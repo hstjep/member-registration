@@ -1,0 +1,48 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<MemberRegistration.Models.ApplicationUser>
+@*@model IEnumerable<MemberRegistration.Models.ApplicationUser>*@
+@{
+    ViewBag.Title = "Index";
+}
+<h4><span class="glyphicon glyphicon-user"></span> Korisnički računi</h4>
+
+@using (Html.BeginForm())
+{
+    <p>
+        <span class="searchBox">@Html.TextBox("searchTerm", null, new { @class = "form-control", placeholder = "Pretraži po korisničkom imenu" })</span>
+        <input type="submit" value="Traži" class="btn btn-default" />
+    </p>
+}
+
+<p>
+    @Html.ActionLink("Kreiraj korisnički račun", "Create") |
+    @Html.ActionLink("Resetiraj lozinku", "ResetPassword") |
+    @Html.ActionLink("Uloge", "Index", "Role")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.UserName)*@ Korisničko ime
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("Uredi", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Obriši", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber }))
+
+
+

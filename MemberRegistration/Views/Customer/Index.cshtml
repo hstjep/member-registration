@@ -1,0 +1,97 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<MemberRegistration.ViewModels.CustomerViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4><span class="glyphicon glyphicon-tag"></span> Kupci</h4>
+
+@using (Html.BeginForm())
+{
+    <p>
+        <span class="searchBox">@Html.TextBox("searchTerm", null, new { @class = "form-control", placeholder = "Pretraži po nazivu" })</span>
+        <input type="submit" value="Traži" class="btn btn-default" />
+    </p>
+}
+
+<p>
+    @Html.ActionLink("Kreiraj kupca", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Name)*@ Naziv
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.OIB)*@ OIB
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Address)*@ Adresa
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Place)*@ Mjesto
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.PostalCode)*@ Poštanski broj
+        </th>
+        <th>
+            Država
+        </th>
+        <th>
+            PDV ID
+        </th>
+        @*<th>
+            Član (Da/Ne)
+        </th>*@
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OIB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Place)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostalCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Country)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PdvId)
+        </td>
+        @*<td>
+            @if(item.IsMember == true) {
+                <text>Da</text>
+            } else
+            {
+                <text>Ne</text>
+            }
+        </td>*@
+        <td>
+            @Html.ActionLink("Uredi", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Detalji", "Details", new { id=item.Id }) |
+            @*@if(item.IsMember == false) { 
+            <text> |</text>*@
+            @Html.ActionLink("Obriši", "Delete", new { id=item.Id })
+                @*//}*@
+        </td>
+    </tr>
+}
+
+</table>
+
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber }))

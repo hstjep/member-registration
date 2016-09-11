@@ -1,0 +1,78 @@
+﻿@model MemberRegistration.ViewModels.InvoiceItemViewModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<h4>Jeste li sigurni da želite obrisati stavku?</h4>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoice.Number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoice.Number)
+        </dd>
+
+        <dt>
+            Proizvod
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+
+        <dt>
+            Član
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrencyUnit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrencyUnit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Obriši" class="btn btn-default" /> |
+            <a href="@Url.Action("Details", "Invoice", new { id = Model.InvoiceId })">Natrag na listu</a>
+        </div>
+    }
+</div>

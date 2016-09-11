@@ -1,0 +1,11 @@
+﻿@using MemberRegistration.Models
+@model LoginViewModel
+<link href="~/content/HomeIndex.css" rel="stylesheet" type="text/css" />
+
+<h4>@ViewBag.Title</h4>
+<div class="box">
+    @Html.Partial("_Login")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

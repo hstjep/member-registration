@@ -1,0 +1,80 @@
+﻿@model MemberRegistration.ViewModels.MembershipFeeViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div>
+    <h4><span class="glyphicon glyphicon-check"></span> Članarina</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Member.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Member.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpirationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpirationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoice.Number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoice.Number)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Natrag na listu", "Index")
+</p>

@@ -1,0 +1,78 @@
+﻿@page { size: landscape; }
+
+#page {
+    width: 33cm;
+    /*min-width: 29.7cm;*/
+    min-height: 21cm;
+    /*margin: auto;*/
+    /*border: 1px #D3D3D3 solid;*/
+    border: none;
+    height: auto !important;
+    margin: 0 auto -4em;
+    border-radius: 5px;
+    background: white;
+    -webkit-box-shadow: 0 0 5px #000000;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 0 5px #000000;
+    -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px #000000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    padding-top: 40px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+body {
+    padding: 0;
+    font: 11pt "Arial";
+    background-color: #F0F0F0;
+}
+
+p {
+    line-height: 1.2;
+}
+
+/* Tablica stil */
+table {
+    border-collapse: collapse;
+    font-size: 11pt;
+    /*margin-left: auto;
+    margin-right: auto;*/
+    width: 1000px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    font-style: normal;
+}
+
+th, td {
+    padding: 0 3px;
+    text-align: center;
+}
+
+td {
+    height: 50px;
+}
+
+th {
+    background-color: #fafafa;
+        padding-left:10px;
+    padding-right:10px;
+}
+
+tfoot td {
+    font-weight: bold;
+    height: 17px;
+    background-color: #fafafa;
+}
+
+.firstColumn {
+    text-align: left;
+}
+/* Tablica stil kraj */
+
+img {
+    width: 300px;
+    height: 60px;
+}

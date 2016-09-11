@@ -1,0 +1,32 @@
+﻿@model MemberRegistration.ViewModels.InvoiceIssuerViewModel
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div>
+    <h4><span class="glyphicon glyphicon-glass"></span> Izdavatelj računa</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OperatorLabel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OperatorLabel)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Uredi", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Natrag na listu", "Index")
+</p>

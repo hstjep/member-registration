@@ -1,0 +1,199 @@
+﻿@model MemberRegistration.ViewModels.InvoiceItemViewModel
+@{
+    Layout = null;
+}
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Dodaj stavku</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.InvoiceId, "InvoiceId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("InvoiceId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.InvoiceId, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductId, "Proizvod", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ProductId", null, String.Empty, htmlAttributes: new { @class = "form-control", @id = "ProductSelectListId" })
+                @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">                      
+            @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Year", null, String.Empty, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+            </div>
+       </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberId, "Član", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MemberId, new { htmlAttributes = new { @id = "MemberSelect", @style = "width:280px" } })
+                @Html.ValidationMessageFor(model => model.MemberId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CurrencyUnit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class="form-control" data-val="true" data-val-required="Polje Valutna jedinica je obvezno." id="CurrencyUnit" name="CurrencyUnit" selected="True">
+                    <option value="1">kn</option>
+                    <option value="2">eur</option>
+                    <option value="3">USD</option>
+                </select>
+                @*@Html.EnumDropDownListFor(model => model.CurrencyUnit, htmlAttributes: new { @class = "form-control", @selected = true })*@
+                @Html.ValidationMessageFor(model => model.CurrencyUnit, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group exchangeRate">
+            <label class="col-md-2 control-label exchangeRate" hidden="hidden">Tečaj</label>
+            <div class="col-md-10">
+                <input type="number" name="exchangeRate" id="exchangeRate" class="form-control text-box single-line exchangeRate" step="0.1"/>
+            </div>
+        </div>
+
+        <input type="number" hidden="hidden" id="cijenaId" />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @id = "kolicinaId" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Value, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control", @id = "vrijednostId" } })
+                @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Kreiraj" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+
+    // Automatic price calculation
+    function ProductOnloadValues() {
+        var Product = {};
+        Product.Id = $("#ProductSelectListId").val();
+
+        $.ajax({
+            url: '@Url.Action("PopulateProduct", "Invoice")',
+            type: "POST",
+            dataType: "json",
+            data: { id: Product.Id },
+            success: function (data) {
+                $("#kolicinaId").val(1);
+                $("#vrijednostId").val(data.Price);
+                $("#cijenaId").val(data.Price);
+            }
+        });
+    }
+
+    $(function () {
+
+        $('#ProductSelectListId').change(function () {
+            ProductOnloadValues();
+        });
+    });
+
+
+    $('#kolicinaId').change(function () {
+
+        var kolicina = $(this).val();
+        var exchangeRate = $('#exchangeRate').val();
+
+        var Product = {};
+        Product.Id = $("#ProductSelectListId").val();
+
+        $.ajax({
+            url: '@Url.Action("PopulateProduct", "Invoice")',
+            type: "POST",
+            dataType: "json",
+            data: { id: Product.Id },
+            success: function (data) {
+                var price = $('#cijenaId').val();
+
+                if ($('#CurrencyUnit').val() == 2) {
+                    $("#vrijednostId").val(Math.round(((price * kolicina) / exchangeRate) * 100) / 100);
+                } else {
+                    $("#vrijednostId").val(data.Price * kolicina);
+                }
+            }
+        });
+
+    });
+
+    window.onload = ProductOnloadValues();
+
+
+    // Exchange rate field
+    $(document).ready(function () {
+
+        $('#exchangeRate').hide();
+
+        $('#CurrencyUnit').change(function () {
+            if ($(this).val() == 2) {
+                $('.exchangeRate').show();
+
+                $('#exchangeRate').change(function () {
+                    if ($('#CurrencyUnit').val() == 2) {
+                        var vrijednost = $('#vrijednostId').val();
+                        var kolicina = $('#kolicinaId').val();
+                        var exchangeRate = $(this).val();
+                        var price = $('#cijenaId').val();
+
+                        $("#vrijednostId").val(Math.round(((price * kolicina) / exchangeRate) * 100) / 100);
+                    }
+                });
+
+            } else {
+                $('.exchangeRate').hide();
+                
+                var kolicina = $('#kolicinaId').val();
+                var price = $('#cijenaId').val();
+
+                $("#vrijednostId").val(price * kolicina);
+            }
+        });
+    });
+
+    // Select2 dropdown
+    $('#MemberSelect').select2({
+        placeholder: 'Odaberite člana',
+        ajax: {
+            url: '@Url.Action("SearchMember", "Member")',
+            dataType: 'json',
+            data: function (term, page) {
+                return {
+                    searchTerm: term
+                };
+            },
+            results: function (data, page) {
+                return { results: data };
+            }
+        }
+    });
+</script>
+

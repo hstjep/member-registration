@@ -1,0 +1,207 @@
+﻿@using MemberRegistration.Common
+@using MemberRegistration.DAL
+@using MemberRegistration.ViewModels
+@using MemberRegistration.Model.Common
+@model Tuple<ISociety, ICustomer, IInvoice, IEnumerable<IInvoiceItemProduct>>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="../../content/Report.css" rel="stylesheet" type="text/css" />
+    @*<link href="/Content/Report.css" rel="stylesheet" />*@
+    <title>Racun Report</title>
+    <style type="text/css" media="print">
+        .noprint {
+            display: none;
+        }
+    </style>
+
+    <script type="text/javascript">
+        window.print();
+
+        function goBack() {
+            window.history.back();
+        }
+
+    </script>
+
+</head>
+<body>
+    @*<div class="noprint"><a class="btn btn-default btn-lg" onclick="goBack()">&laquo Go Back</a></div>*@
+
+    @*<div class="noprint">
+            <a class="btn btn-default btn-lg" href="@Url.Action("Details", "Racun", new { id = Model.Item3.Id })">&laquo Go Back</a>
+        </div>*@
+
+
+    <div id="page">
+        <article>
+            <table class="header">
+                <tr>
+                    <td>
+                        @if (Model.Item1.Logo != null)
+                        {
+                            <img src="@Url.Action("GetImage", "Society", new { SocietyId = Model.Item1.Id })" />
+                        }
+                    </td>
+                    <td>
+                        <p class="zaglavlje">
+                            @Html.DisplayFor(model => model.Item1.Name) <br />
+                            @Html.DisplayFor(model => model.Item1.Address),
+                            @Html.DisplayFor(model => model.Item1.PostalCode)
+                            @Html.DisplayFor(model => model.Item1.Place),
+                            @Html.DisplayFor(model => model.Item1.Country) <br />
+                            @Html.DisplayFor(model => model.Item1.WebSite),
+                            @Html.DisplayFor(model => model.Item1.Email) <br />
+                            OIB: @Html.DisplayFor(model => model.Item1.OIB) <br />
+                            IBAN: @Html.DisplayFor(model => model.Item1.IBAN)
+                        </p>
+                    </td>
+                </tr>
+                </table>
+        </article>
+        <hr />
+        <br />
+        <h3><b>Račun br. @Html.DisplayFor(model => model.Item3.Number)/1/1</b></h3>
+
+        <article>
+            <div class="customer">
+                <b>KUPAC:</b> <br />
+                Naziv: @Html.DisplayFor(model => model.Item2.FirstName) @Html.DisplayFor(model => model.Item2.LastName) <br />
+                Adresa: @Html.DisplayFor(model => model.Item2.Address) <br />
+                Mjesto: @Html.DisplayFor(model => model.Item2.PostalCode)&nbsp;
+                @Html.DisplayFor(model => model.Item2.Place) <br />
+                OIB: @Html.DisplayFor(model => model.Item2.OIB) <br />
+                PDV ID: @Html.DisplayFor(model => model.Item2.PdvId) <br />
+            </div>
+        </article>
+
+
+        <article>
+            <p>
+                @*Datum i vrijeme: 19.2.2016. 18:20 <br />*@
+                Datum i vrijeme: @Html.ValueFor(model => model.Item3.PaymentDate, "{0:dd.MM.yyyy. HH:mm}") @ViewBag.Time <br />
+                Mjesto: @Html.DisplayFor(model => model.Item1.CashRegisterLocation) <br />
+                Datum isporuke: @Html.ValueFor(model => model.Item3.PaymentDate, "{0:dd.MM.yyyy.}")<br />
+                Dospijeće: @Html.ValueFor(model => model.Item3.MaturityDate, "{0:dd.MM.yyyy.}")<br />
+                Način plaćanja: @Html.DisplayFor(model => model.Item3.PaymentMethod) <br />
+                Oznaka operatera: @Html.DisplayFor(model => model.Item3.InvoiceIssuer.OperatorLabel)
+            </p>
+        </article>
+        <br />
+        <br />
+        <table class="main">
+            <thead>
+                <tr>
+                    <th>Rbr.</th>
+                    <th>Naziv</th>
+                    <th>J.mj.</th>
+                    <th>Kol.</th>
+                    <th>Cijena</th>
+                    <th>Iznos <br /> PDV-a</th>
+                    <th>Iznos (@Html.DisplayFor(model => model.Item4.FirstOrDefault().CurrencyUnit))</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int rowNo = 0;}
+
+                @foreach (var item in Model.Item4)
+                {
+                    <tr>
+                        <td>@(rowNo += 1).</td>
+                        <td class="firstColumn">
+                            @Html.DisplayFor(modelItem => item.ProductName) za 
+                            @Html.DisplayFor(model => model.Item1.Acronym) za @Html.DisplayFor(modelItem => item.Year). godinu - <br />
+                            @Html.DisplayFor(modelItem => item.MemberFirstName) @Html.DisplayFor(modelItem => item.MemberLastName)
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.MeasuringUnit)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                        <td>-</td>
+                        <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    </tr>
+                }
+            </tbody>
+            @*<tfoot>
+                <tr>
+                    <td class="firstColumn">UKUPNO: </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>@ViewBag.Total</td>
+                </tr>
+            </tfoot>*@
+        </table>
+        <table class="tfoot">
+            <tr class="top">
+                <td id="firstTd">Ukupno kn <br />
+                Osnovica <br />
+Porez % <br />
+                Iznos PDV-a</td>
+
+                <td id="secondTd">@ViewBag.Total <br />
+                @ViewBag.Total <br />
+                oslobođeno <br />
+                -</td>               
+            </tr>
+            <tr class="bottom">
+                <td><b>SVEUKUPNO @Html.DisplayFor(model => model.Item4.FirstOrDefault().CurrencyUnit)</b></td>
+                <td>@ViewBag.Total</td>
+            </tr>
+        </table>
+
+        <br />
+        <p>
+            <i>
+                PDV nije zaračunat sukladno Članku 90. st.2. <br />
+                Zakona o PDV-u.
+            </i>
+        </p>
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <div>
+            <article class="odgOsoba">
+                <p>
+                    Odgovorna osoba: <br /><br />
+                    @Html.DisplayFor(model => model.Item3.ResponsiblePerson.FullName),
+                    @Html.DisplayFor(model => model.Item3.ResponsiblePerson.Title)
+                </p>
+            </article>
+
+            <article class="izdRacuna">
+                <p>
+                    Racun izdala: <br /><br />
+                    @Html.DisplayFor(model => model.Item3.InvoiceIssuer.FullName)
+                </p>
+            </article>
+        </div>
+      
+        <div class="push"></div>
+    </div>
+
+    <div class="footer">
+        <span class="text">Račun je izdan elektronskim putem.</span>
+
+        <hr class="footer-line" />
+        <p>
+            @Html.DisplayFor(model => model.Item1.Name),
+            @Html.DisplayFor(model => model.Item1.Address),
+            OIB: @Html.DisplayFor(model => model.Item1.OIB),
+            IBAN: @Html.DisplayFor(model => model.Item1.IBAN), <br />
+            @Html.DisplayFor(model => model.Item1.Bank),
+            @Html.DisplayFor(model => model.Item1.WebSite),
+            @Html.DisplayFor(model => model.Item1.Email)
+        </p>
+    </div>
+</body>
+
+</html>

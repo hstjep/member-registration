@@ -1,0 +1,100 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<MemberRegistration.ViewModels.ActivityViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4><span class="glyphicon glyphicon-calendar"></span> Aktivnosti</h4>
+
+@using (Html.BeginForm())
+{
+    <p>
+        <span class="searchBox">@Html.TextBox("searchTerm", null, new { @class = "form-control", placeholder = "Pretraži po nazivu ili članu" })</span>
+        <input type="submit" value="Traži" class="btn btn-default" />
+    </p>
+}
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Kreiraj aktivnost", "Create")
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Name)*@ Naziv aktivnosti
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.MemberId)*@ Član
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Description)*@ Opis
+        </th>
+        <th>
+            Broj sati
+        </th>
+        <th>
+            Tip aktivnosti
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.DateFrom)*@ Od
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.DateTo)*@ Do
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.FirstName) @Html.DisplayFor(modelItem => item.Customer.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberOfHours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActivityType)
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.DateFrom, "{0:dd.MM.yyyy.}")
+        </td>
+        <td>
+            @if (item.DateTo != null)
+            {
+                @Html.ValueFor(modelItem => item.DateTo, "{0:dd.MM.yyyy.}")
+            }
+            else
+            {
+                <text>Danas</text>
+            }
+        </td>
+
+
+
+        <td>
+@if (User.IsInRole("Admin"))
+{
+    <span>@Html.ActionLink("Uredi", "Edit", new { id = item.Id }) |</span>
+    <span>@Html.ActionLink("Detalji", "Details", new { id = item.Id }) |</span>
+    <span>@Html.ActionLink("Obriši", "Delete", new { id = item.Id })</span>
+}
+else {
+    @Html.ActionLink("Detalji", "Details", new { id = item.Id })
+}
+        </td>
+    </tr>
+}
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber }))

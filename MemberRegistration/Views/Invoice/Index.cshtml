@@ -1,0 +1,90 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<MemberRegistration.ViewModels.InvoiceViewModel>
+@*@model IEnumerable<MemberRegistration.ViewModels.InvoiceViewModel>*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4><span class="glyphicon glyphicon-list-alt"></span> Računi</h4>
+
+@using (Html.BeginForm())
+{
+    <p>
+        <span class="searchBox">@Html.TextBox("searchTerm", null, new { @class = "form-control", placeholder = "Pretraži po kupcu" })</span>
+        <input type="submit" value="Traži" class="btn btn-default" />
+    </p>
+}
+
+<p>
+    @Html.ActionLink("Kreiraj račun", "Create")
+</p>
+<table class="table linkRow">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Number)*@ Broj
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Society)*@ Udruga
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Customer)*@ Kupac
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.InvoiceIssuer)*@ Izdavatelj računa
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.ResponsiblePerson)*@ Odgovorna osoba
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Date)*@ Datum plaćanja
+        </th>
+        <th>
+            Datum dospijeća
+        </th>
+        <th>
+            Način plaćanja
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr data-url="@Url.Action("Details", "Invoice", new { id = item.Id })">
+        <td>
+            @Html.DisplayFor(modelItem => item.Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Society.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.FirstName) @Html.DisplayFor(modelItem => item.Customer.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InvoiceIssuer.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResponsiblePerson.FullName)
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.PaymentDate, "{0:dd.MM.yyyy.}")
+        </td>
+        <td>
+            @Html.ValueFor(modelItem => item.MaturityDate, "{0:dd.MM.yyyy.}")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentMethod)
+        </td>
+        <td>
+            @*@Html.ActionLink("Uredi", "Edit", new { id = item.Id }) |*@
+            @Html.ActionLink("Detalji", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Obriši", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+}
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber }))
+

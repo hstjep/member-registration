@@ -1,0 +1,203 @@
+﻿@page { size: portrait; }
+
+@media screen, print {
+    #page {
+        width: 21cm;
+        min-height: 29.7cm;
+        /*min-height: 33cm;*/
+        /*margin: auto;*/
+        /*border: 1px #D3D3D3 solid;*/
+        height: auto !important;
+        margin: 0 auto -4em;
+        /*border-radius: 5px;*/
+        background: white;
+        -webkit-box-shadow: 0 0 5px #000000;
+        -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        -ms-box-shadow: 0 0 5px #000000;
+        -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 5px #000000;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        padding-top: 60px;
+        padding-left: 80px;
+        padding-right: 80px;
+        margin-bottom: -120px;
+    }
+
+    body {
+        padding: 0;
+        font: 10pt "Arial";
+        background-color: #F0F0F0;
+    }
+
+    .zaglavlje {
+        line-height: 1.2;
+        font: 11pt "Calibri";
+    }
+
+    img {
+        width: 300px;
+        height: 60px;
+    }
+
+    p {
+        line-height: 1.2;
+    }
+
+    .customer {
+        float: right;
+        text-align: left;
+        /*padding: 10px 10px;*/
+        width: 200px;
+        height: 75px;
+    }
+
+
+    /* Tablica stil */
+    .main {
+        border-collapse: collapse;
+        font-size: 10pt;
+        margin-left: auto;
+        margin-right: auto;
+        width: 770px;
+    }
+
+        .main th, td {
+            border: 0.3pt solid #D3D3D3;
+            font-style: normal;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .main th, td {
+            text-align: center;
+        }
+
+    td {
+        height: 50px;
+    }
+
+    thead th {
+        background-color: #fafafa;
+        -webkit-print-color-adjust: exact;
+    }
+
+    /*tfoot td {
+    font-weight: bold;
+    height: 17px;
+    background-color: #fafafa;
+}*/
+
+    .firstColumn {
+        padding-left: 10px;
+        text-align: left;
+    }
+
+    .tfoot {
+        border-collapse: collapse;
+        margin-left: 500px;
+        margin-top: 15px;
+    }
+
+        .tfoot tr td {
+            border: none;
+            text-align: right;
+        }
+
+        .tfoot .top {
+            border-bottom: solid 1px;
+        }
+
+    .top td {
+        font-style: italic;
+    }
+
+    #firstTd {
+        border-right: solid 1px;
+    }
+
+    #secondTd {
+        width: 170px;
+    }
+
+
+    /* Tablica stil kraj */
+
+
+    .izdRacuna {
+        line-height: 50px;
+    }
+
+    .odgOsoba {
+        float: right;
+        text-align: right;
+        line-height: 50px;
+    }
+
+
+
+    .footer-line {
+        width: 21cm;
+    }
+
+    .footer, .push {
+        height: 4em;
+        text-align: center;
+    }
+
+        .footer p {
+            font-size: 6.5pt;
+        }
+
+    /* Button */
+    .btn-default {
+        color: #333333;
+        background-color: #ffffff;
+        position: fixed;
+    }
+
+        .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default {
+            color: #333333;
+            background-color: #ebebeb;
+            border-color: #adadad;
+        }
+
+    .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.428571429;
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #D8D8D8;
+        cursor: pointer;
+        border-radius: 4px;
+        position: fixed;
+    }
+
+    .btn-lg {
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.33;
+        border-radius: 6px;
+    }
+
+    .text {
+        text-align: center;
+    }
+}
+
+.note {
+    font-weight:bold;
+    text-align:right;
+}
+
+.header {
+    border: none;
+}
+
+.header td {
+    padding-right:50px;
+    text-align:left;
+    border:none;
+}

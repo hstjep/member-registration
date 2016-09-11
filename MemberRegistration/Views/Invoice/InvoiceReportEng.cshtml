@@ -1,0 +1,199 @@
+﻿@using MemberRegistration.Common
+@using MemberRegistration.DAL
+@using MemberRegistration.ViewModels
+@using MemberRegistration.Model.Common
+@model Tuple<ISociety, ICustomer, IInvoice, IEnumerable<IInvoiceItemProduct>>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="../../content/Report.css" rel="stylesheet" type="text/css" />
+    @*<link href="/Content/Report.css" rel="stylesheet" />*@
+    <title>Racun Report</title>
+    <style type="text/css" media="print">
+        .noprint {
+            display: none;
+        }
+    </style>
+
+    <script type="text/javascript">
+        window.print();
+
+        function goBack() {
+            window.history.back();
+        }
+
+    </script>
+
+</head>
+<body>
+    @*<div class="noprint"><a class="btn btn-default btn-lg" onclick="goBack()">&laquo Go Back</a></div>*@
+
+    @*<div class="noprint">
+            <a class="btn btn-default btn-lg" href="@Url.Action("Details", "Racun", new { id = Model.Item3.Id })">&laquo Go Back</a>
+        </div>*@
+
+
+    <div id="page">
+        <article>
+            <p class="zaglavlje">
+                <img src="~/Content/crorrs.png" />
+                <br />
+                Hrvatsko društvo za operacijska istraživanja <br />
+                @Html.DisplayFor(model => model.Item1.Address),
+                @Html.DisplayFor(model => model.Item1.PostalCode)
+                @Html.DisplayFor(model => model.Item1.Place), Croatia <br />
+                @Html.DisplayFor(model => model.Item1.WebSite),
+                @Html.DisplayFor(model => model.Item1.Email) <br />
+                OIB: @Html.DisplayFor(model => model.Item1.OIB) <br />
+                IBAN: @Html.DisplayFor(model => model.Item1.IBAN)
+            </p>
+        </article>
+        <hr />
+        <p class="note">- PRIJEVOD</p>
+        <h3><b>Invoice No. @Html.DisplayFor(model => model.Item3.Number)/1/1</b></h3>
+
+        <article>
+            <div class="customer">
+                <b>CUSTOMER:</b> <br />
+                Name: @Html.DisplayFor(model => model.Item2.FirstName) @Html.DisplayFor(model => model.Item2.LastName) <br />
+                Address: @Html.DisplayFor(model => model.Item2.Address) <br />
+                Place: @Html.DisplayFor(model => model.Item2.PostalCode)&nbsp;
+                @Html.DisplayFor(model => model.Item2.Place) <br />
+                VAT ID: @Html.DisplayFor(model => model.Item2.OIB) <br />
+            </div>
+        </article>
+
+
+        <article>
+            <p>
+                Date and time: @Html.ValueFor(model => model.Item3.PaymentDate, "{0:dd.MM.yyyy. HH:mm}") @ViewBag.Time <br />
+                Place: @Html.DisplayFor(model => model.Item1.CashRegisterLocation) <br />
+                Date of delivery: @Html.ValueFor(model => model.Item3.PaymentDate, "{0:dd.MM.yyyy.}")<br />
+                Payment due: @Html.ValueFor(model => model.Item3.MaturityDate, "{0:dd.MM.yyyy.}")<br />
+                Payment type: @Html.DisplayFor(model => model.Item3.PaymentMethod) <br />
+                Operator code: @Html.DisplayFor(model => model.Item3.InvoiceIssuer.OperatorLabel)
+            </p>
+        </article>
+        <br />
+        <br />
+        <table class="main">
+            <thead>
+                <tr>
+                    <th>&nbsp;&nbsp;#&nbsp;&nbsp;</th>
+                    <th>Description</th>
+                    <th>Unit</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Tax <br />amount</th>
+                    <th>Amount <br />(@Html.DisplayFor(model => model.Item4.FirstOrDefault().CurrencyUnit))</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int rowNo = 0;}
+
+                @foreach (var item in Model.Item4)
+                {
+                    <tr>
+                        <td>@(rowNo += 1)</td>
+                        <td class="firstColumn">
+                            Membership for CRORS (@Html.DisplayFor(model => model.Item1.Acronym)) for @Html.DisplayFor(modelItem => item.Year) - <br />
+                            @Html.DisplayFor(modelItem => item.MemberFirstName) @Html.DisplayFor(modelItem => item.MemberLastName)
+                        </td>
+                        <td>person</td>
+                        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                        <td>-</td>
+                        <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                    </tr>
+                }
+            </tbody>
+            @*<tfoot>
+                    <tr>
+                        <td class="firstColumn">UKUPNO: </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>@ViewBag.Total</td>
+                    </tr>
+                </tfoot>*@
+        </table>
+        <table class="tfoot">
+            <tr class="top">
+                <td id="firstTd">
+                    Total <br />
+                    Total without tax <br />
+                    Total rate % <br />
+                    Tax amount
+                </td>
+
+                <td id="secondTd">
+                    @ViewBag.Total <br />
+                @ViewBag.Total <br />
+                free <br />
+                -
+            </td>
+        </tr>
+        <tr class="bottom">
+            <td><b>Total with tax @Html.DisplayFor(model => model.Item4.FirstOrDefault().CurrencyUnit)</b></td>
+            <td>@ViewBag.Total</td>
+        </tr>
+    </table>
+
+    <br />
+    <p>
+        VAT has not been calculated pursuant to Article 90, Law on VAT (PDV).
+    </p>
+    <p>
+        <i>
+            The membership payment is valid for the period of 1 calendar year after the day of payment. 
+        </i>
+    </p>
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div>
+        <article class="odgOsoba">
+            <p>
+                Person responsible: <br /><br />
+                @Html.DisplayFor(model => model.Item3.ResponsiblePerson.FullName), president
+            </p>
+        </article>
+
+        <article class="izdRacuna">
+            <p>
+                Invoice issued: <br /><br />
+                @Html.DisplayFor(model => model.Item3.InvoiceIssuer.FullName)
+            </p>
+        </article>
+    </div>
+
+    <div class="push"></div>
+</div>
+
+<div class="footer">
+    <span class="text">Invoice is issued electronically.</span>
+
+    <hr class="footer-line" />
+    <p>
+        Croatian Operational Research Society,
+        @Html.DisplayFor(model => model.Item1.Address),
+        VAT ID: @Html.DisplayFor(model => model.Item1.OIB),
+        IBAN: @Html.DisplayFor(model => model.Item1.IBAN), <br />
+        @Html.DisplayFor(model => model.Item1.Bank),
+        @Html.DisplayFor(model => model.Item1.WebSite),
+        @Html.DisplayFor(model => model.Item1.Email)
+    </p>
+</div>
+</body>
+
+</html>
+

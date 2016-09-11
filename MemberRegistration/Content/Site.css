@@ -1,0 +1,91 @@
+﻿body {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    background-color: #F0F0F0;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Site CSS nadopuna */
+
+.logoImg {
+    width:340px;
+    height:70px;
+    padding-bottom:3px;
+}
+
+.boxBody {
+    background-color:white;
+    width:85%;
+    margin:0 auto;
+}
+
+.logoImgdiv {
+    width:85%;
+    margin:0 auto;
+    /*padding-bottom:10px;*/ 
+}
+
+.footerAdd {
+    font-size:11px;
+    text-align: center;
+}
+
+.removedMember {
+    color: #C2C2C2;
+}
+
+
+/* Tablica on hover */
+.linkRow tr:hover:nth-child(n+2) {
+    background-color: #F8F8F8;
+}
+
+.linkRow td:hover:nth-child(n+2) {
+    cursor: pointer;
+}
+
+.searchBox {
+    float:left;
+    width:270px;
+}
+
+/* home page */
+
+.jumbotron {
+    background-color:#fafafa;
+margin-top:-27px;
+    padding:30px;
+    border: 1px solid #ebebeb;
+    font-size:11pt;
+
+}
+
+.jumbotron p {
+    font-size:11pt;
+    margin:2.5px;
+    /*font-family:"Lucida Sans Unicode";*/
+}
+
+.jumbotron h1, h2, h3, h4 {
+    /*font-family:"Lucida Sans Unicode"*/
+}
+
+.col-md-4 {
+    padding-left:25px;
+    margin-top:-15px;
+}
+
+
+

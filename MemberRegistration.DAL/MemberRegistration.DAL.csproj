@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D8E7E806-693A-4A87-86B4-F039CF3989AF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MemberRegistration.DAL</RootNamespace>
+    <AssemblyName>MemberRegistration.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationDbContext.cs" />
+    <Compile Include="Entities\Activity.cs" />
+    <Compile Include="Entities\Member.cs" />
+    <Compile Include="Entities\MembershipFee.cs" />
+    <Compile Include="Entities\IdentityModels.cs" />
+    <Compile Include="Entities\InvoiceIssuer.cs" />
+    <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\ResponsiblePerson.cs" />
+    <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\InvoiceItem.cs" />
+    <Compile Include="Entities\Invoice.cs" />
+    <Compile Include="Entities\Society.cs" />
+    <Compile Include="Mapping\ActivityMap.cs" />
+    <Compile Include="Mapping\MembershipFeeMap.cs" />
+    <Compile Include="Mapping\MemberMap.cs" />
+    <Compile Include="Mapping\InvoiceIssuerMap.cs" />
+    <Compile Include="Mapping\CustomerMap.cs" />
+    <Compile Include="Mapping\ResponsiblePersonMap.cs" />
+    <Compile Include="Mapping\ProductMap.cs" />
+    <Compile Include="Mapping\InvoiceItemMap.cs" />
+    <Compile Include="Mapping\InvoiceMap.cs" />
+    <Compile Include="Mapping\SocietyMap.cs" />
+    <Compile Include="Migrations\201602202105216_InitialCreate.cs" />
+    <Compile Include="Migrations\201602202105216_InitialCreate.Designer.cs">
+      <DependentUpon>201602202105216_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607102206329_ValidationMaxValueChanges.cs" />
+    <Compile Include="Migrations\201607102206329_ValidationMaxValueChanges.Designer.cs">
+      <DependentUpon>201607102206329_ValidationMaxValueChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607311850302_ValidationMaxValueUpdate.cs" />
+    <Compile Include="Migrations\201607311850302_ValidationMaxValueUpdate.Designer.cs">
+      <DependentUpon>201607311850302_ValidationMaxValueUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607311853190_CurrentEmploymentMaxValueUpdate.cs" />
+    <Compile Include="Migrations\201607311853190_CurrentEmploymentMaxValueUpdate.Designer.cs">
+      <DependentUpon>201607311853190_CurrentEmploymentMaxValueUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MemberRegistration.Common\MemberRegistration.Common.csproj">
+      <Project>{035dcf3d-0209-42b2-9fe4-74c2a8d25f74}</Project>
+      <Name>MemberRegistration.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201602202105216_InitialCreate.resx">
+      <DependentUpon>201602202105216_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607102206329_ValidationMaxValueChanges.resx">
+      <DependentUpon>201607102206329_ValidationMaxValueChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607311850302_ValidationMaxValueUpdate.resx">
+      <DependentUpon>201607311850302_ValidationMaxValueUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607311853190_CurrentEmploymentMaxValueUpdate.resx">
+      <DependentUpon>201607311853190_CurrentEmploymentMaxValueUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

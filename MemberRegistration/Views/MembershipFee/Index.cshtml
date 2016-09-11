@@ -1,0 +1,91 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<MemberRegistration.ViewModels.MembershipFeeViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4><span class="glyphicon glyphicon-check"></span> Članarine</h4>
+
+
+@using (Html.BeginForm())
+{
+    <p>
+        <span class="searchBox">@Html.TextBox("searchTerm", null, new { @class = "form-control", placeholder = "Pretraži po imenu ili prezimenu" })</span>
+        <input type="submit" value="Traži" class="btn btn-default" />
+    </p>
+}
+
+<table class="table linkRow">
+    <tr>
+        <th>
+            Prezime
+        </th>
+        <th>
+            Ime
+        </th>
+        <th>
+            Godina
+        </th>
+        <th>
+            Datum plaćanja
+        </th>
+        <th>
+            Datum isteka
+        </th>
+        <th>
+            Status plaćanja
+        </th>
+        <th>
+            Iznos (kn)
+        </th>
+        <th>
+            Broj računa
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+    @*<tr data-url="@Url.Action("Details", "MembershipFee", new { id = item.Id })">*@
+         <td>
+            @Html.DisplayFor(modelItem => item.Member.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Member.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Year)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpirationDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Invoice.Number)
+        </td>
+        <td>
+            @Html.ActionLink("Detalji", "Details", new { id = item.Id }) |
+
+            <a href="javascript: w=window.open('@Url.Action("InvoiceReport", "Invoice", new { invoiceId = item.InvoiceId })')">Ispiši račun</a>
+            <div id="editor"></div>
+        </td>
+    </tr>
+}
+
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber }))
+
+

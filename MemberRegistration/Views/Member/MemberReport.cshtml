@@ -1,0 +1,147 @@
+﻿@*@model IEnumerable<MemberRegistration.ViewModels.MemberViewModel>*@
+@model Tuple<IEnumerable<MemberRegistration.ViewModels.MemberViewModel>, MemberRegistration.ViewModels.SocietyViewModel>
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="../../content/MemberReport.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/MemberReport.css" rel="stylesheet" />
+    <script type="text/javascript">
+        window.print();
+    </script>
+</head>
+
+
+    <body>
+        <div id="page">
+            <article>
+                <p class="zaglavlje">
+                    @if (Model.Item2.Logo != null)
+                    {
+                        <img src="@Url.Action("GetImage", "Society", new { SocietyId = Model.Item2.Id })" />
+                    }
+                    <br />
+                    @Html.DisplayFor(model => model.Item2.Name) <br />
+                    @Html.DisplayFor(model => model.Item2.Address) <br />
+                    @Html.DisplayFor(model => model.Item2.WebSite),
+                    @Html.DisplayFor(model => model.Item2.Email) <br />
+                    OIB: @Html.DisplayFor(model => model.Item2.OIB) <br />
+                    IBAN: @Html.DisplayFor(model => model.Item2.IBAN)
+                </p>
+            </article>
+
+            <h2>Popis članova HDOI</h2>
+            <table class="table">
+                <tr>
+                    <th>
+                        Ime
+                    </th>
+                    <th>
+                        Prezime
+                    </th>
+                    <th>
+                        OIB
+                    </th>
+                    <th>
+                        Adresa
+                    </th>
+                    <th>
+                        Mjesto
+                    </th>
+                    <th>
+                        Poštanski broj
+                    </th>
+                    <th>
+                        Članski broj
+                    </th>
+                    <th>
+                        Mjesto rođenja
+                    </th>
+                    <th>
+                        Datum rođenja
+                    </th>
+                    <th>
+                        Telefon
+                    </th>
+                    <th>
+                        Sadašnje zaposlenje
+                    </th>
+                    <th>
+                        E-mail
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.WebSite)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AreaOfInterest)
+                    </th>*@
+                    <th>
+                        Datum učlanjenja
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.Item1)
+            {
+                    if(item.IsRemoved != true)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OIB)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Place)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PostalCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MembershipNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BirthPlace)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BirthDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CurrentEmployment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.WebSite)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AreaOfInterest)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MembershipDate)
+                        </td>
+                    </tr>
+                    }
+                }
+
+            </table>
+        </div>
+</body>
+</html>

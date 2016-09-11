@@ -1,0 +1,85 @@
+﻿@model MemberRegistration.ViewModels.InvoiceViewModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h4><span class="glyphicon glyphicon-list-alt"></span> Jeste li sigurni da želite obrisati račun?</h4>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Number)
+        </dd>
+
+        <dt>
+            Udruga
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Society.Name)
+        </dd>
+
+        <dt>
+            Kupac
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.FullName)
+        </dd>
+
+        <dt>
+            Izdavatelj računa
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceIssuer.FullName)
+        </dd>
+
+        <dt>
+            Odgovorna osoba
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResponsiblePerson.FullName)
+        </dd>      
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+
+        <dd>
+            @Html.ValueFor(model => model.PaymentDate, "{0:dd.MM.yyyy.}")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaturityDate)
+        </dt>
+
+        <dd>
+            @Html.ValueFor(model => model.MaturityDate, "{0:dd.MM.yyyy.}")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentMethod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentMethod)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Obriši" class="btn btn-default" /> |
+            @Html.ActionLink("Natrag na listu", "Index")
+        </div>
+    }
+</div>

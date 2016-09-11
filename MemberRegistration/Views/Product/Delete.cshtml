@@ -1,0 +1,46 @@
+﻿@model MemberRegistration.ViewModels.ProductViewModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<h4><span class="glyphicon glyphicon-shopping-cart"></span> Jeste li sigurni da želite obrisati proizvod?</h4>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MeasuringUnit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MeasuringUnit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Obriši" class="btn btn-default" /> |
+            @Html.ActionLink("Natrag na listu", "Index")
+        </div>
+    }
+</div>
