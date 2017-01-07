@@ -125,10 +125,27 @@ namespace MemberRegistration.Repository
         /// </returns>
         public virtual Task<int> GetInvoiceNumberAsync()
         {
-            return Task.FromResult(Repository.GetWhere<Invoice>()
-                .OrderByDescending(i => i.Number)
-                .Select(i => i.Number)
-                .FirstOrDefault() + 1);
+            var lastInvoice = Repository.GetWhere<Invoice>()
+              .OrderByDescending(i => i.PaymentDate.Year)
+              .ThenByDescending(i => i.Number)
+              .Select(i => new { i.Number, i.PaymentDate.Year })
+              .FirstOrDefault();
+
+            if (lastInvoice != null)
+            {
+                if (lastInvoice.Year < DateTime.Today.Year)
+                {
+                    return Task.FromResult(1);
+                }
+                else
+                {
+                    return Task.FromResult(lastInvoice.Number + 1);
+                }
+            }
+            else
+            {
+                return Task.FromResult(1);
+            }
         }
 
         #endregion Methods
