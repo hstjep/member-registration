@@ -12,50 +12,56 @@ namespace MemberRegistration.Repository.Common
         #region Methods
 
         /// <summary>
-        /// Gets all societies asynchronously.
+        /// Asynchronously gets all societies.
         /// </summary>
         /// <returns>The societies.</returns>
         Task<List<ISociety>> GetAsync();
 
         /// <summary>
-        /// Gets the society by id asynchronously.
+        /// Gets the default society.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        ISociety GetDefault();
+
+        /// <summary>
+        /// Asynchronously gets the society by id.
+        /// </summary>
+        /// <param name="id">The society identifier.</param>
         /// <returns>The society.</returns>
         Task<ISociety> GetAsync(Guid id);
 
         /// <summary>
-        /// Gets the society by id asynchronously.
+        /// Asynchronously gets the society by id.
         /// </summary>
         /// <param name="id">The invoice identifier.</param>
         /// <returns>The society.</returns>
-        Task<ISociety> GetSocietyForRacunAsync(Guid invoiceId);
+        Task<ISociety> GetSocietyForInvoiceAsync(Guid invoiceId);
 
         /// <summary>
-        /// Gets the society by id asynchronously.
+        /// Asynchronously gets the society by id.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>The society.</returns>
         Task<ISociety> GetWhereAsync(Guid societyId);
 
         /// <summary>
-        /// Creates a society asynchronously.
+        /// Asynchronously creates a society.
         /// </summary>
         /// <param name="society">The society.</param>
         /// <returns></returns>
         Task<int> AddAsync(ISociety society);
 
         /// <summary>
-        /// Updates the society asynchronously.
+        /// Asynchronously updates the society.
         /// </summary>
         /// <param name="society">The society.</param>
         /// <returns></returns>
         Task<int> UpdateAsync(ISociety society);
 
         /// <summary>
-        /// Removes the product by id asynchronously.
+        /// Asynchronously removes the society by id.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The society identifier.</param>
         /// <returns></returns>
         Task<int> DeleteAsync(Guid id);
 

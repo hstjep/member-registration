@@ -15,6 +15,12 @@ namespace MemberRegistration.Repository
     {
         #region Properties
 
+        /// <summary>
+        /// Gets the repository.
+        /// </summary>
+        /// <value>
+        /// The repository.
+        /// </value>
         protected IRepository Repository { get; private set; }
 
         #endregion Properties
@@ -22,6 +28,10 @@ namespace MemberRegistration.Repository
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SocietyRepository"/> class.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
         public SocietyRepository(IRepository repository)
         {
             this.Repository = repository;
@@ -33,7 +43,7 @@ namespace MemberRegistration.Repository
         #region Methods
 
         /// <summary>
-        /// Gets all societies asynchronously.
+        /// Asynchronously gets all societies.
         /// </summary>
         /// <returns>
         /// The societies.
@@ -44,9 +54,9 @@ namespace MemberRegistration.Repository
         }
 
         /// <summary>
-        /// Gets the society by id asynchronously.
+        /// Asynchronously gets the society by id.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The society identifier.</param>
         /// <returns>
         /// The society.
         /// </returns>
@@ -56,9 +66,9 @@ namespace MemberRegistration.Repository
         }
 
         /// <summary>
-        /// Gets the society by id asynchronously.
+        /// Asynchronously gets the society by id.
         /// </summary>
-        /// <param name="societyId"></param>
+        /// <param name="societyId">The society identifier.</param>
         /// <returns>
         /// The society.
         /// </returns>
@@ -68,20 +78,30 @@ namespace MemberRegistration.Repository
         }
 
         /// <summary>
-        /// Gets the society by id asynchronously.
+        /// Gets the default society.
         /// </summary>
-        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        public virtual ISociety GetDefault()
+        {
+            var societies = Repository.GetWhere<Society>();
+            return Mapper.Map<ISociety>(societies.FirstOrDefault());
+        }
+
+        /// <summary>
+        /// Asynchronously gets the society by id.
+        /// </summary>
+        /// <param name="invoiceId">The invoice identifier.</param>
         /// <returns>
         /// The society.
         /// </returns>
-        public virtual async Task<ISociety> GetSocietyForRacunAsync(Guid invoiceId)
+        public virtual async Task<ISociety> GetSocietyForInvoiceAsync(Guid invoiceId)
         {
             var invoice = await Repository.GetWhere<Invoice>().Where(r => r.Id == invoiceId).FirstOrDefaultAsync();
             return Mapper.Map<SocietyPOCO>(await Repository.GetWhere<Society>().Where(p => p.Id == invoice.SocietyId).FirstOrDefaultAsync());
         }
 
         /// <summary>
-        /// Creates a society asynchronously.
+        /// Asynchronously creates a society.
         /// </summary>
         /// <param name="society">The society.</param>
         /// <returns></returns>
@@ -91,7 +111,7 @@ namespace MemberRegistration.Repository
         }
 
         /// <summary>
-        /// Updates the society asynchronously.
+        /// Asynchronously updates the society.
         /// </summary>
         /// <param name="society">The society.</param>
         /// <returns></returns>
@@ -101,9 +121,9 @@ namespace MemberRegistration.Repository
         }
 
         /// <summary>
-        /// Removes the product by id asynchronously.
+        /// Asynchronously removes the society by id.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The society identifier.</param>
         /// <returns></returns>
         public virtual Task<int> DeleteAsync(Guid id)
         {

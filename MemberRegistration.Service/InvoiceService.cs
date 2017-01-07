@@ -120,7 +120,7 @@ namespace MemberRegistration.Service
         /// <returns></returns>
         public Task<ISociety> GetSocietyAsync(Guid invoiceId)
         {
-            return SocietyRepository.GetSocietyForRacunAsync(invoiceId);
+            return SocietyRepository.GetSocietyForInvoiceAsync(invoiceId);
         }
 
         /// <summary>

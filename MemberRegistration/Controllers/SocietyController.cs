@@ -22,13 +22,23 @@ namespace MemberRegistration.Controllers
     {
         #region Properties
 
+        /// <summary>
+        /// Gets the society service.
+        /// </summary>
+        /// <value>
+        /// The society service.
+        /// </value>
         protected ISocietyService Service { get; private set; }
 
         #endregion Properties
 
-        
+
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SocietyController"/> class.
+        /// </summary>
+        /// <param name="service">The society service.</param>
         public SocietyController(ISocietyService service)
         {
             this.Service = service;
@@ -36,23 +46,23 @@ namespace MemberRegistration.Controllers
 
         #endregion Constructors
 
-        
+
         #region Methods
 
         /// <summary>
-        /// Gets the societies.
+        /// Gets the default society.
         /// </summary>
-        /// <returns>The societies.</returns>
-        public async Task<ActionResult> Index()
+        /// <returns>The society.</returns>
+        public ActionResult Index()
         {
-            List<ISociety> societies = await Service.GetAsync();
-            return View(Mapper.Map<IEnumerable<SocietyViewModel>>(societies));
+            ISociety society = Service.GetDefault();
+            return View(Mapper.Map<SocietyViewModel>(society));
         }
 
         /// <summary>
         /// Gets the society by id.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The society identifier.</param>
         /// <returns>The society.</returns>
         public async Task<ActionResult> Details(Guid id)
         {
@@ -69,7 +79,7 @@ namespace MemberRegistration.Controllers
         }
 
         /// <summary>
-        /// Gets user interface for creating a new society.
+        /// Gets the user interface for creating a new society.
         /// </summary>
         /// <returns></returns>
         public ActionResult Create()
@@ -78,7 +88,7 @@ namespace MemberRegistration.Controllers
         }
 
         /// <summary>
-        /// Creates a society to the database.
+        /// Creates a society.
         /// </summary>
         /// <param name="society">The society.</param>
         /// <returns></returns>
@@ -103,7 +113,7 @@ namespace MemberRegistration.Controllers
         /// <summary>
         /// Gets the society by id for editing.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The society identifier.</param>
         /// <returns></returns>
         public async Task<ActionResult> Edit(Guid id)
         {
@@ -147,7 +157,7 @@ namespace MemberRegistration.Controllers
         /// Gets the society by id for deleting.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>View for deleting the society.</returns>
+        /// <returns></returns>
         public async Task<ActionResult> Delete(Guid id)
         {
             if (id == null)
@@ -165,7 +175,7 @@ namespace MemberRegistration.Controllers
         /// <summary>
         /// Deletes the society.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The society identifier.</param>
         /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -176,7 +186,7 @@ namespace MemberRegistration.Controllers
         }
 
         /// <summary>
-        /// Gets the logo image file for the given society identifier.
+        /// Gets the logo image file.
         /// </summary>
         /// <param name="SocietyId">The society identifier.</param>
         /// <returns></returns>
@@ -192,6 +202,16 @@ namespace MemberRegistration.Controllers
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Gets the society details.
+        /// </summary>
+        /// <returns></returns>
+        public PartialViewResult _SocietyDetails()
+        {
+            ISociety society = Service.GetDefault();
+            return PartialView(Mapper.Map<SocietyViewModel>(society));
         }
 
         #endregion Methods

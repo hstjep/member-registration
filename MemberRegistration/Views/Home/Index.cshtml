@@ -1,112 +1,41 @@
-﻿@model MemberRegistration.ViewModels.MemberViewModel
-
-@{
+﻿@{
     ViewBag.Title = "Početna";
 }
 
 <link href="~/content/HomeIndex.css" rel="stylesheet" type="text/css" />
 
-    @if (Request.IsAuthenticated)
-    {
-        @*<img src="~/Content/koi.jpg" class="homeImg" />*@
-        <h4><span class="glyphicon glyphicon-home"></span> Početna</h4>
+@if (Request.IsAuthenticated)
+{
+    <h4><span class="glyphicon glyphicon-home"></span> Početna</h4>
         <hr />
-    <div class="jumbotron">
-        <dl class="dl-horizontal">
-            <dt>
-                Naziv
-            </dt>
+        <div class="jumbotron">
+            @Html.Action("_SocietyDetails", "Society")
+        </div>
 
-            <dd>
-                Hrvatsko društvo za operacijska istraživanja
-            </dd>
-
-            <dt>
-                Adresa
-            </dt>
-
-            <dd>
-                Trg J. F. Kennedyja 6, 10000 Zagreb
-            </dd>
-
-            <dt>
-                OIB
-            </dt>
-
-            <dd>
-                19764968282
-            </dd>
-
-            <dt>
-                Web sjedište
-            </dt>
-
-            <dd>
-                www.hdoi.hr
-            </dd>
-
-            <dt>
-                Email
-            </dt>
-
-            <dd>
-                hdoi@hdoi.hr
-            </dd>
-            <dt>
-                IBAN
-            </dt>
-
-            <dd>
-                HR9323600001101418273
-            </dd>
-
-            <dt>
-                Lokacija blagajne
-            </dt>
-
-            <dd>
-                Osijek
-            </dd>
-
-            <dt>
-                Banka
-            </dt>
-
-            <dd>
-                Zagrebačka banka, d.d.
-            </dd>
-
-        </dl>
-
+        <div class="row">
+            <div class="col-md-3">
+                <h4><span class="glyphicon glyphicon-user"></span> Profil</h4>
+                <p>
+                    Uvid u osobne podatke i uređivanje osobnih podataka moguće je ostvariti na stranici profila.
+                </p>
+                <a class="btn btn-default" href="@Url.Action("Index", "Profile")">Profil &raquo;</a>
+            </div>
+            <div class="col-md-3">
+                <h4><span class="glyphicon glyphicon-check"></span> Članarina</h4>
+                <p>Informacije o plaćenim članarinama i uvid u račun plaćene članarine nalaze se na stranici članarina.</p>
+                <p><a class="btn btn-default" href="@Url.Action("Index", "MembershipFee")">Članarina &raquo;</a></p>
+            </div>
+        </div>
+}
+else
+{
+    <div class="box">
+        @Html.Partial("_Login")
     </div>
-
-    <div class="row">
-        <div class="col-md-3">
-            <h4><span class="glyphicon glyphicon-user"></span> Profil</h4>
-            <p>
-                Uvid u osobne podatke i uređivanje osobnih podataka moguće je ostvariti na stranici profila.
-            </p>
-            <a class="btn btn-default" href="@Url.Action("Index", "Profile")">Profil &raquo;</a>
-        </div>
-        <div class="col-md-3">
-            <h4><span class="glyphicon glyphicon-check"></span> Članarina</h4>
-            <p>Informacije o plaćenim članarinama i uvid u račun plaćene članarine nalaze se na stranici članarina.</p>
-            <p><a class="btn btn-default" href="@Url.Action("Index", "MembershipFee")">Članarina &raquo;</a></p>
-        </div>
-    </div>
-    }
-    else
-    {
-        <div class="box">
-            @Html.Partial("_Login")
-        </div>
-    }
-
-@*</div>*@
+}
 
 
 
 
 
 
- 

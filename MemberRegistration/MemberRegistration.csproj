@@ -339,7 +339,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Society\Create.cshtml" />
     <Content Include="Views\Society\Delete.cshtml" />
-    <Content Include="Views\Society\Details.cshtml" />
     <Content Include="Views\Society\Edit.cshtml" />
     <Content Include="Views\Society\Index.cshtml" />
     <Content Include="Views\Member\Details.cshtml" />
@@ -396,6 +395,7 @@
     <Content Include="Views\Member\MemberReport.cshtml" />
     <Content Include="Views\Invoice\InvoiceReportEng.cshtml" />
     <Content Include="Views\User\ResetPassword.cshtml" />
+    <Content Include="Views\Shared\_SocietyDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

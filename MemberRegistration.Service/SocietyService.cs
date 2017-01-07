@@ -9,9 +9,15 @@ namespace MemberRegistration.Service
 {
     public class SocietyService : ISocietyService
     {
-        
+
         #region Properties
 
+        /// <summary>
+        /// Gets the society repository.
+        /// </summary>
+        /// <value>
+        /// The society repository.
+        /// </value>
         protected ISocietyRepository Repository { get; private set; }
 
         #endregion Properties
@@ -19,6 +25,10 @@ namespace MemberRegistration.Service
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SocietyService"/> class.
+        /// </summary>
+        /// <param name="repository">The society repository.</param>
         public SocietyService(ISocietyRepository repository)
         {
             this.Repository = repository;
@@ -30,7 +40,7 @@ namespace MemberRegistration.Service
         #region Methods
 
         /// <summary>
-        /// Gets all societies asynchronously.
+        /// Asynchronously gets all societies.
         /// </summary>
         /// <returns>
         /// The societies.
@@ -41,9 +51,18 @@ namespace MemberRegistration.Service
         }
 
         /// <summary>
-        /// Gets the society by id asynchronously.
+        /// Gets the default society.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public virtual ISociety GetDefault()
+        {
+            return Repository.GetDefault();
+        }
+
+        /// <summary>
+        /// Asynchronously gets the society by id.
+        /// </summary>
+        /// <param name="id">The society identifier.</param>
         /// <returns>
         /// The society.
         /// </returns>
@@ -53,7 +72,7 @@ namespace MemberRegistration.Service
         }
 
         /// <summary>
-        /// Gets the society by id asynchronously.
+        /// Asynchronously gets the society by id.
         /// </summary>
         /// <param name="societyId"></param>
         /// <returns>
@@ -65,7 +84,7 @@ namespace MemberRegistration.Service
         }
 
         /// <summary>
-        /// Creates a society asynchronously.
+        /// Asynchronously creates a society.
         /// </summary>
         /// <param name="society">The society.</param>
         /// <returns></returns>
@@ -75,7 +94,7 @@ namespace MemberRegistration.Service
         }
 
         /// <summary>
-        /// Updates the society asynchronously.
+        /// Asynchronously updates the society.
         /// </summary>
         /// <param name="society">The society.</param>
         /// <returns></returns>
@@ -85,9 +104,9 @@ namespace MemberRegistration.Service
         }
 
         /// <summary>
-        /// Removes the society by id async.
+        /// Asynchronously removes the society by id.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The society identifier.</param>
         /// <returns></returns>
         public Task<int> DeleteAsync(Guid id)
         {

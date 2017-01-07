@@ -33,8 +33,6 @@ namespace MemberRegistration.Controllers
 
         public ActionResult Index()
         {
-            //var Member = await Service.GetCurrentAsync();
-            //return View(AutoMapper.Mapper.Map<MemberViewModel>(Member));
             return View();
         }
 
