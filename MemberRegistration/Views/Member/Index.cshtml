@@ -11,11 +11,16 @@
 @using (Html.BeginForm())
 {
     <p>
-        <span class="searchBox">@Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Pretraži po imenu ili prezimenu" })</span> 
-       <input type="submit" value="Traži" class="btn btn-default" />
+        <span class="searchBox">@Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Pretraži po imenu ili prezimenu" })</span>
+        <input type="submit" value="Traži" class="btn btn-default" />
     </p>
     <p>
-        <span class="glyphicon glyphicon-file"></span><a href="javascript: w=window.open('@Url.Action("MemberReport", "Member")')"> Ispiši</a>
+        <span class="glyphicon glyphicon-file"></span><a href="javascript: w=window.open('@Url.Action("MemberReport", "Member")')">
+            PDF
+        </a>
+        <span class="glyphicon glyphicon-file"></span><a href="@Url.Action("ExportDataToExcel", "Member")">
+            Excel <i class="fa fa-circle-o-notch fa-spin"></i>
+        </a>
     </p>
 }
 
@@ -46,8 +51,8 @@
             @*@Html.DisplayNameFor(model => model.Address)*@ Adresa
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>*@
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>*@
         <th>
             @*@Html.DisplayNameFor(model => model.CurrentEmployment)*@ Sadašnje zaposlenje
         </th>
@@ -55,74 +60,74 @@
             @*@Html.DisplayNameFor(model => model.Email)*@ E-mail
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.WebSite)
-        </th>*@
+                @Html.DisplayNameFor(model => model.WebSite)
+            </th>*@
         @*<th>
-            @Html.DisplayNameFor(model => model.AreaOfInterest)
-        </th>*@
+                @Html.DisplayNameFor(model => model.AreaOfInterest)
+            </th>*@
         @*<th>
-            @Html.DisplayNameFor(model => model.MembershipDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>*@
+                @Html.DisplayNameFor(model => model.MembershipDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>*@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr @{if (item.IsRemoved) { <text> class="removedMember"</text> }
-        }>
-        <td>
-            @Html.DisplayFor(modelItem => item.MembershipNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OIB)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BirthPlace)
-        </td>
-        <td>
-            @Html.ValueFor(modelItem => item.BirthDate, "{0:dd.MM.yyyy.}")
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Place)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.PhoneNumber)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.CurrentEmployment)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.WebSite)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AreaOfInterest)
-        </td>*@
-        @*<td>
-            @Html.DisplayFor(modelItem => item.MembershipDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>*@
-        <td>
-            @Html.ActionLink("Uredi", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Detalji", "Details", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr @{if (item.IsRemoved) { <text> class="removedMember" </text>     } }>
+            <td>
+                @Html.DisplayFor(modelItem => item.MembershipNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OIB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthPlace)
+            </td>
+            <td>
+                @Html.ValueFor(modelItem => item.BirthDate, "{0:dd.MM.yyyy.}")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Place)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentEmployment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.WebSite)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AreaOfInterest)
+                </td>*@
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.MembershipDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>*@
+            <td>
+                @Html.ActionLink("Uredi", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Detalji", "Details", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
 
@@ -130,6 +135,14 @@
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
 @Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber }))
+
+<script type="text/javascript">
+    $('.fa').hide();
+
+    $('.fa').click(function () {
+        $('.fa').show();
+    });
+</script>
 
 
 

@@ -1,4 +1,5 @@
-﻿using MemberRegistration.Common.Filters;
+﻿using ClosedXML.Excel;
+using MemberRegistration.Common.Filters;
 using MemberRegistration.Model.Common;
 using System;
 using System.Collections.Generic;
@@ -13,27 +14,27 @@ namespace MemberRegistration.Service.Common
         #region Methods
 
         /// <summary>
-        /// Gets the members asynchronously.
+        /// Asynchronously gets the members.
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The members.</returns>
         Task<IEnumerable<IMember>> GetAsync(IFilter filter = null);
 
         /// <summary>
-        /// Gets the member by id asynchronously.
+        /// Asynchronously gets the member by id.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The member identifier.</param>
         /// <returns>The member.</returns>
         Task<IMember> GetAsync(Guid id);
 
         /// <summary>
-        /// Gets the current member asynchronously.
+        /// Asynchronously gets the current member.
         /// </summary>
         /// <returns>The current member.</returns>
-        Task<IMember> GetCurrentAsync();
+        Task<IMember> GetCurrentMemberAsync();
 
         /// <summary>
-        /// Updates the member asynchronously.
+        /// Asynchronously updates the member.
         /// </summary>
         /// <param name="member">The member</param>
         /// <returns></returns>
@@ -42,8 +43,14 @@ namespace MemberRegistration.Service.Common
         /// <summary>
         /// Gets the last membership number and increases it by one.
         /// </summary>
-        /// <returns>The increased invoice number.</returns>
+        /// <returns>The invoice number.</returns>
         Task<int> GetMembershipNumberAsync();
+
+        /// <summary>
+        /// Asynchronously gets the workbook containing the members data.
+        /// </summary>
+        /// <returns></returns>
+        Task<XLWorkbook> GetWorkbookAsync();
 
         #endregion Methods
     }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using PagedList;
 using AutoMapper;
+using System.IO;
 
 namespace MemberRegistration.Controllers
 {
@@ -119,6 +120,28 @@ namespace MemberRegistration.Controllers
             var members = Mapper.Map<IEnumerable<MemberViewModel>>(await Service.GetAsync());
             var society = Mapper.Map<IEnumerable<SocietyViewModel>>(await SocietyService.GetAsync()).FirstOrDefault();
             return View(new Tuple<IEnumerable<MemberViewModel>, SocietyViewModel>(members, society));
+        }
+
+
+        /// <summary>
+        /// Exports the members data to excel.
+        /// </summary>
+        /// <returns></returns>
+        public async Task ExportDataToExcel()
+        {
+            var wb = await Service.GetWorkbookAsync();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", String.Format(@"attachment;filename=Clanovi.xlsx"));
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                wb.SaveAs(memoryStream);
+                memoryStream.WriteTo(Response.OutputStream);
+                memoryStream.Close();
+            }
+
+            Response.End();
         }
 
 

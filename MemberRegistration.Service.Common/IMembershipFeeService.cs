@@ -1,4 +1,5 @@
-﻿using MemberRegistration.Common.Filters;
+﻿using ClosedXML.Excel;
+using MemberRegistration.Common.Filters;
 using MemberRegistration.Model.Common;
 using System;
 using System.Collections.Generic;
@@ -11,21 +12,21 @@ namespace MemberRegistration.Service.Common
     public interface IMembershipFeeService
     {
         /// <summary>
-        /// Gets the membership fees asynchronously.
+        /// Asynchronously gets the membership fees.
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The membership fees.</returns>
         Task<IEnumerable<IMembershipFee>> GetAsync(IFilter filter = null);
 
         /// <summary>
-        /// Gets the membership fee by id asynchronously.
+        /// Asynchronously gets the membership fee by id.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The membership fee identifier.</param>
         /// <returns>The membership fee.</returns>
         Task<IMembershipFee> GetAsync(Guid id);
 
         /// <summary>
-        /// Gets the current user's membership fees asynchronously.
+        /// Asynchronously gets the current user's membership fees.
         /// </summary>
         /// <returns>The membership fee.</returns>
         List<IMembershipFee> GetCurrentAsync();

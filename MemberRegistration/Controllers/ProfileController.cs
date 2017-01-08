@@ -45,7 +45,7 @@ namespace MemberRegistration.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                var profile = await Service.GetCurrentAsync();
+                var profile = await Service.GetCurrentMemberAsync();
                 ViewBag.UMemberId = profile.Id;
                 return View(Mapper.Map<MemberViewModel>(profile));
             }

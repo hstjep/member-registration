@@ -69,6 +69,30 @@ namespace MemberRegistration.Repository
         }
 
         /// <summary>
+        /// Asynchronously gets the current members.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Task<IEnumerable<IMember>> GetCurrentMembersAsync()
+        {
+            return Task.FromResult(Mapper.Map<IEnumerable<IMember>>(
+                Repository.GetWhere<Member>()
+                .Where(m => m.IsRemoved == false)
+                .OrderBy(m => m.MembershipNumber)));
+        }
+
+        /// <summary>
+        /// Gets the current member asynchronously.
+        /// </summary>
+        /// <returns>
+        /// The current member.
+        /// </returns>
+        public virtual async Task<IMember> GetCurrentMemberAsync()
+        {
+            var currentUser = Guid.Parse(ClaimsPrincipal.Current.Identity.GetUserId());
+            return Mapper.Map<MemberPOCO>(await Repository.GetWhere<Member>().Where(c => c.User.Id == currentUser).FirstOrDefaultAsync());
+        }
+
+        /// <summary>
         /// Gets the member by id asynchronously.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -78,18 +102,6 @@ namespace MemberRegistration.Repository
         public virtual async Task<IMember> GetAsync(Guid id)
         {
             return Mapper.Map<MemberPOCO>(await Repository.GetWhere<Member>().Where(c => c.Id == id).FirstOrDefaultAsync());
-        }
-
-        /// <summary>
-        /// Gets the current member asynchronously.
-        /// </summary>
-        /// <returns>
-        /// The current member.
-        /// </returns>
-        public virtual async Task<IMember> GetCurrentAsync()
-        {
-            var currentUser = Guid.Parse(ClaimsPrincipal.Current.Identity.GetUserId());
-            return Mapper.Map<MemberPOCO>(await Repository.GetWhere<Member>().Where(c => c.User.Id == currentUser).FirstOrDefaultAsync());
         }
 
         /// <summary>

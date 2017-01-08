@@ -13,6 +13,8 @@ namespace MemberRegistration.Model.Mapping
             AutoMapper.Mapper.CreateMap<Member, MemberPOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<Member, IMember>().ReverseMap();
             AutoMapper.Mapper.CreateMap<IMember, MemberPOCO>().ReverseMap();
+            AutoMapper.Mapper.CreateMap<MemberPOCO, MemberExportPOCO>();
+            AutoMapper.Mapper.CreateMap<IMember, MemberExportPOCO>();
 
             AutoMapper.Mapper.CreateMap<MembershipFee, MembershipFeePOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<MembershipFee, IMembershipFee>().ReverseMap();

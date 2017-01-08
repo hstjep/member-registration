@@ -16,20 +16,26 @@ namespace MemberRegistration.Repository.Common
         Task<IEnumerable<IMember>> GetAsync(IFilter filter = null);
 
         /// <summary>
-        /// Gets the member by id asynchronously.
+        /// Asynchronously gets the current members.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<IMember>> GetCurrentMembersAsync();
+
+        /// <summary>
+        /// Asynchronously gets the current member.
+        /// </summary>
+        /// <returns>The current member.</returns>
+        Task<IMember> GetCurrentMemberAsync();
+         
+        /// <summary>
+        /// Asynchronously gets the member by id.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>The member.</returns>
         Task<IMember> GetAsync(Guid id);
 
         /// <summary>
-        /// Gets the current member asynchronously.
-        /// </summary>
-        /// <returns>The current member.</returns>
-        Task<IMember> GetCurrentAsync();
-
-        /// <summary>
-        /// Updates the member asynchronously.
+        /// Asynchronously updates the member.
         /// </summary>
         /// <param name="member">The member</param>
         /// <returns></returns>
@@ -38,7 +44,7 @@ namespace MemberRegistration.Repository.Common
         /// <summary>
         /// Gets the last membership number and increases it by one.
         /// </summary>
-        /// <returns>The increased invoice number.</returns>
+        /// <returns>The invoice number.</returns>
         Task<int> GetMembershipNumberAsync();
     }
 }
