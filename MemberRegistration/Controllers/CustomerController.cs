@@ -40,14 +40,12 @@ namespace MemberRegistration.Controllers
         /// Gets the customers.
         /// </summary>
         /// <returns>The customers.</returns>
-        public async Task<ActionResult> Index(string searchTerm, int pageNumber = 1, int pageSize = 15)
+        public async Task<ActionResult> Index(string searchTerm, int pageNumber = 1, int pageSize = 2)
         {
-            var customers = Mapper.Map<IEnumerable<CustomerViewModel>>(
-                await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize)))
-                .ToPagedList(pageNumber, pageSize);
+            var customers = Mapper.Map<CollectionViewModel<CustomerViewModel>>(
+                await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize)));
            
-            var customerPagedList = new StaticPagedList<CustomerViewModel>(customers, customers.GetMetaData());         
-            return View(customerPagedList);
+            return View(customers);
         }
 
 
@@ -178,8 +176,8 @@ namespace MemberRegistration.Controllers
         /// <returns></returns>
         public async Task<JsonResult> SearchCustomer(string searchTerm, string currentFilter, int pageNumber = 0, int pageSize = 0)
         {
-            var customers = await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize));
-            return Json(customers.Select(k => new { id = k.Id, text = k.FullName  }), JsonRequestBehavior.AllowGet);
+            var result = await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize));
+            return Json(result.Items.Select(k => new { id = k.Id, text = k.FirstName + " " + k.LastName  }), JsonRequestBehavior.AllowGet);
         }
 
         #endregion Methods

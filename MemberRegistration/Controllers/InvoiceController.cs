@@ -91,7 +91,6 @@ namespace MemberRegistration.Controllers
         public async Task<ActionResult> Create()
         {
             ViewBag.InvoiceNumber = await Service.GetInvoiceNumberAsync();
-            ViewBag.CustomerId = new SelectList(await CustomerService.GetAsync(), "Id", "Name");
             ViewBag.InvoiceIssuerId = new SelectList(await InvoiceIssuerService.GetAsync(), "Id", "FullName");
             ViewBag.ResponsiblePersonId = new SelectList(await ResponsiblePersonService.GetAsync(), "Id", "FullName");
             ViewBag.SocietyId = new SelectList(await SocietyService.GetAsync(), "Id", "Name");

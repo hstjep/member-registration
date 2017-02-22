@@ -41,28 +41,37 @@ namespace MemberRegistration.Repository
         /// </summary>
         /// <param name="filter"></param>
         /// <returns>The customers.</returns>
-        public virtual async Task<IEnumerable<ICustomer>> GetAsync(IFilter filter = null)
+        public virtual async Task<ICollectionModel<ICustomer>> GetAsync(IFilter filter)
         {
-            if (filter != null)
-            {
-                var customers = Mapper.Map<IEnumerable<CustomerPOCO>>(
-                    await Repository.GetWhere<Customer>()
-                    .OrderBy(k => k.LastName)
-                    .ToListAsync());
+            var customers = Mapper.Map<IEnumerable<ICustomer>>(await Repository.GetAsync<Customer>());
+            var model = new CollectionModelPOCO<ICustomer>();
 
-                if (!string.IsNullOrWhiteSpace(filter.SearchString))
-                {
-                    customers = customers.Where(k => k.FullName.ToUpper()
-                        .Contains(filter.SearchString.ToUpper()))
+            model.TotalResults = customers.Count();
+            model.PageNumber = filter.PageNumber;
+            model.PageSize = filter.PageSize;
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchString))
+            {
+                customers = customers.Where(c => c.FirstName.ToUpper()
+                    .Contains(filter.SearchString.ToUpper()) 
+                    || c.LastName.ToUpper().Contains(filter.SearchString.ToUpper()))
+                        .Skip((filter.PageNumber - 1) * filter.PageSize)
+                        .Take(filter.PageSize)
                         .ToList();
-                }
+            }
+            else {
+                customers = customers
+                    .Skip((filter.PageNumber - 1) * filter.PageSize)
+                    .Take(filter.PageSize)
+                    .ToList();
+            }
 
-                return customers;
-            }
-            else
+            foreach (var customer in customers)
             {
-                return Mapper.Map<IEnumerable<CustomerPOCO>>(await Repository.GetWhere<Customer>().ToListAsync());
+                model.Items.Add(customer);
             }
+
+            return model;
         }
 
         /// <summary>

@@ -27,6 +27,7 @@ namespace MemberRegistration.Model.Mapping
             AutoMapper.Mapper.CreateMap<Customer, CustomerPOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<Customer, ICustomer>().ReverseMap();
             AutoMapper.Mapper.CreateMap<ICustomer, CustomerPOCO>().ReverseMap();
+            AutoMapper.Mapper.CreateMap<ICollectionModel<ICustomer>, CollectionModelPOCO<CustomerPOCO>>().ReverseMap();
 
             AutoMapper.Mapper.CreateMap<ResponsiblePerson, ResponsiblePersonPOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<ResponsiblePerson, IResponsiblePerson>().ReverseMap();

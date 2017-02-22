@@ -1,4 +1,5 @@
 ﻿using MemberRegistration.Common.Filters;
+using MemberRegistration.Model;
 using MemberRegistration.Model.Common;
 using MemberRegistration.Repository.Common;
 using MemberRegistration.Service.Common;
@@ -38,9 +39,10 @@ namespace MemberRegistration.Service
         /// <returns>
         /// The customers.
         /// </returns>
-        public Task<IEnumerable<ICustomer>> GetAsync(IFilter filter = null)
+        public Task<ICollectionModel<ICustomer>> GetAsync(IFilter filter)
         {
             return Repository.GetAsync(filter);
+
         }
 
         /// <summary>

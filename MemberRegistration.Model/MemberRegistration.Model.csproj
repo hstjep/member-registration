@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityPOCO.cs" />
+    <Compile Include="CollectionModelPOCO.cs" />
     <Compile Include="MemberExportPOCO.cs" />
     <Compile Include="MemberPOCO.cs" />
     <Compile Include="MembershipFeePOCO.cs" />

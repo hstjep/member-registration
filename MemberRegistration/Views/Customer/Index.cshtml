@@ -1,5 +1,4 @@
-﻿@using PagedList.Mvc;
-@model PagedList.IPagedList<MemberRegistration.ViewModels.CustomerViewModel>
+﻿@model MemberRegistration.ViewModels.CollectionViewModel<MemberRegistration.ViewModels.CustomerViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -47,7 +46,7 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Items) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
@@ -90,8 +89,13 @@
 }
 
 </table>
-
-
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber }))
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="@(@Model.PageNumber == i ? "active" : "")"><a href="#">@i <span class="sr-only">(current)</span></a></li>
+        }
+        <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+    </ul>
+</nav>
