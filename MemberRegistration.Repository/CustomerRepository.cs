@@ -41,37 +41,39 @@ namespace MemberRegistration.Repository
         /// </summary>
         /// <param name="filter"></param>
         /// <returns>The customers.</returns>
-        public virtual async Task<ICollectionModel<ICustomer>> GetAsync(IFilter filter)
+        public virtual Task<ICollectionModel<ICustomer>> GetAsync(IFilter filter)
         {
-            var customers = Mapper.Map<IEnumerable<ICustomer>>(await Repository.GetAsync<Customer>());
+            IEnumerable<ICustomer> customers;
             var model = new CollectionModelPOCO<ICustomer>();
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchString))
+            {
+                customers = Mapper.Map<IEnumerable<ICustomer>>(
+                    Repository.GetWhere<Customer>()
+                       .Where(c => c.FirstName.ToUpper()
+                       .Contains(filter.SearchString.ToUpper())
+                        || c.LastName.ToUpper()
+                        .Contains(filter.SearchString.ToUpper())));
+            } else {
+                customers = Mapper.Map<IEnumerable<ICustomer>>(
+                    Repository.GetWhere<Customer>());
+            }
 
             model.TotalResults = customers.Count();
             model.PageNumber = filter.PageNumber;
             model.PageSize = filter.PageSize;
 
-            if (!string.IsNullOrWhiteSpace(filter.SearchString))
-            {
-                customers = customers.Where(c => c.FirstName.ToUpper()
-                    .Contains(filter.SearchString.ToUpper()) 
-                    || c.LastName.ToUpper().Contains(filter.SearchString.ToUpper()))
-                        .Skip((filter.PageNumber - 1) * filter.PageSize)
-                        .Take(filter.PageSize)
-                        .ToList();
-            }
-            else {
-                customers = customers
-                    .Skip((filter.PageNumber - 1) * filter.PageSize)
-                    .Take(filter.PageSize)
-                    .ToList();
-            }
+            customers = customers
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToList();
 
             foreach (var customer in customers)
             {
                 model.Items.Add(customer);
             }
 
-            return model;
+            return Task.FromResult<ICollectionModel<ICustomer>>(model);
         }
 
         /// <summary>

@@ -42,30 +42,41 @@ namespace MemberRegistration.Repository
         /// <returns>
         /// The members.
         /// </returns>
-        public virtual async Task<IEnumerable<IMember>> GetAsync(IFilter filter = null)
+        public virtual Task<ICollectionModel<IMember>> GetAsync(IFilter filter)
         {
-            if (filter != null)
-            {
-                var Members = Mapper.Map<IEnumerable<MemberPOCO>>(
-                    await Repository.GetWhere<Member>()
-                    .OrderBy(c => c.LastName)
-                    .ToListAsync());
+            IEnumerable<IMember> members;
+            var model = new CollectionModelPOCO<IMember>();
 
-                if (!string.IsNullOrWhiteSpace(filter.SearchString))
-                {
-                    Members = Members.Where(s => s.LastName.ToUpper()
+            if (!string.IsNullOrWhiteSpace(filter.SearchString))
+            {
+                members = Mapper.Map<IEnumerable<MemberPOCO>>(
+                    Repository.GetWhere<Member>()
+                    .Where(s => s.LastName.ToUpper()
                         .Contains(filter.SearchString.ToUpper())
                                         || s.FirstName.ToUpper()
-                                        .Contains(filter.SearchString.ToUpper()))
-                                        .OrderBy(c => c.LastName)
-                                        .ToList();
-                }
-                return Members;
-            }
-            else
+                                        .Contains(filter.SearchString.ToUpper())));
+            } else
             {
-                return Mapper.Map<IEnumerable<MemberPOCO>>(Repository.GetWhere<Member>()).ToList();
+                members = Mapper.Map<IEnumerable<MemberPOCO>>(
+                    Repository.GetWhere<Member>());
             }
+
+            model.TotalResults = members.Count();
+            model.PageNumber = filter.PageNumber;
+            model.PageSize = filter.PageSize;
+
+            members = members
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .OrderBy(c => c.LastName)
+                .ToList();
+
+            foreach (var member in members)
+            {
+                model.Items.Add(member);
+            }
+
+            return Task.FromResult<ICollectionModel<IMember>>(model);
         }
 
         /// <summary>
