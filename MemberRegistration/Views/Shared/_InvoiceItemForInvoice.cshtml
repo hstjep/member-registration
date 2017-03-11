@@ -2,8 +2,8 @@
 
 @{
     AjaxOptions ajaxOptions = new AjaxOptions { UpdateTargetId = "RacunStavkeList", HttpMethod = "Post", InsertionMode = InsertionMode.Replace };
-
 }
+
 <div id="RacunStavkeList">
     <h4>Lista stavki</h4>
     @using (Ajax.BeginForm("_InvoiceItemForInvoice", new { invoiceId = ViewBag.InvoiceId }, ajaxOptions))

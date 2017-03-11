@@ -50,7 +50,7 @@ namespace MemberRegistration.Service
         /// <returns>
         /// The members.
         /// </returns>
-        public Task<IEnumerable<IMember>> GetAsync(IFilter filter = null)
+        public Task<ICollectionModel<IMember>> GetAsync(IFilter filter = null)
         {
             return Repository.GetAsync(filter);
         }

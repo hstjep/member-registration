@@ -50,18 +50,19 @@ namespace MemberRegistration.Controllers
         /// Gets the users.
         /// </summary>
         /// <returns>The users.</returns>
-        public async Task<ActionResult> Index(string searchTerm, int? page)
+        public ActionResult Index(string searchTerm, int? page)
         {
-            var users = await UserManager.Users.ToListAsync();
+            var users = UserManager.Users.AsQueryable();
             
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                users = users.Where(s => s.UserName.ToUpper().Contains(searchTerm.ToUpper())).ToList();
+                users = users.Where(s => s.UserName.ToUpper()
+                .Contains(searchTerm.ToUpper()));              
             }
 
             int pageSize = 15;
             int pageNumber = (page ?? 1);
-            return View(users.ToPagedList(pageNumber, pageSize));
+            return View(users.OrderBy(u => u.UserName).ToPagedList(pageNumber, pageSize));
         }
 
         /// <summary>

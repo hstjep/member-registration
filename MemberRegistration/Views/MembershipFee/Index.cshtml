@@ -1,5 +1,5 @@
-﻿@using PagedList.Mvc;
-@model PagedList.IPagedList<MemberRegistration.ViewModels.MembershipFeeViewModel>
+﻿@model MemberRegistration.ViewModels.CollectionViewModel<MemberRegistration.ViewModels.MembershipFeeViewModel>
+
 
 @{
     ViewBag.Title = "Index";
@@ -45,7 +45,7 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model)
+@foreach (var item in Model.Items)
 {
     <tr>
     @*<tr data-url="@Url.Action("Details", "MembershipFee", new { id = item.Id })">*@
@@ -84,8 +84,24 @@
 
 </table>
 
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="@(@Model.HasPreviousPageSet ? "" : "hidden")">@Html.ActionLink("<", "Index", new { pageNumber = Model.PageNumber - 1 })</li>
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="@(@Model.PageNumber == i ? "active" : "")">
+                @if (Model.PageNumber == i)
+                {
+                    <span class="current">@i</span>
+                }
+                else
+                {
+                    @Html.ActionLink(@i.ToString(), "Index", new { pageNumber = @i })
 
-@Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber }))
-
+                }
+            </li>
+        }
+        <li class="@(@Model.HasNextPageSet ? "" : "hidden")">@Html.ActionLink(">", "Index", new { pageNumber = Model.PageNumber + 1 })</li>
+    </ul>
+</nav>
 

@@ -54,31 +54,32 @@ namespace MemberRegistration.Repository
         /// <returns>
         /// The activities.
         /// </returns>
-        public virtual async Task<IEnumerable<IActivity>> GetAsync(Filter filter = null)
+        public virtual async Task<ICollectionModel<IActivity>> GetAsync(Filter filter)
         {
-            if (filter != null)
-            {
-                var activities = Mapper.Map<List<IActivity>>(
-                    await Repository.GetWhere<Activity>()
-                    .OrderByDescending(a => a.Customer.LastName)
-                    .ToListAsync());
+            var model = new CollectionModelPOCO<IActivity>();
+            IQueryable<Activity> query = Repository.GetWhere<Activity>();
 
-                if (!string.IsNullOrWhiteSpace(filter.SearchString))
-                {
-                    activities = activities.Where(a => a.Customer.FirstName.ToUpper()
-                        .Contains(filter.SearchString.ToUpper())
-                        || a.Customer.LastName.ToUpper()
-                        .Contains(filter.SearchString.ToUpper())
-                        || a.Name.ToUpper()
-                        .Contains(filter.SearchString.ToUpper()))
-                        .ToList();
-                }
-                return activities;
-            }
-            else
+            if (!string.IsNullOrWhiteSpace(filter.SearchString))
             {
-                return Mapper.Map<IEnumerable<IActivity>>(await Repository.GetWhere<Activity>().OrderByDescending(a => a.Customer.LastName).ToListAsync());
+                query = query.Where(a => a.Customer.FirstName.ToUpper()
+                    .Contains(filter.SearchString.ToUpper())
+                    || a.Customer.LastName.ToUpper()
+                    .Contains(filter.SearchString.ToUpper())
+                    || a.Name.ToUpper()
+                    .Contains(filter.SearchString.ToUpper()));
             }
+
+            model.TotalResults = await query.CountAsync();
+            model.PageNumber = filter.PageNumber;
+            model.PageSize = filter.PageSize;
+
+            model.Items = Mapper.Map<IEnumerable<IActivity>>(
+                await query.OrderByDescending(a => a.Customer.LastName)
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync());
+
+            return model;
         }
 
         /// <summary>

@@ -40,27 +40,31 @@ namespace MemberRegistration.Repository
         /// <returns>
         /// The invoices.
         /// </returns>
-        public async Task<IEnumerable<IInvoice>> GetAsync(IFilter filter = null)
+        public async Task<ICollectionModel<IInvoice>> GetAsync(IFilter filter)
         {
-            if (filter != null)
-            {
-                var invoices = Mapper.Map<List<IInvoice>>(await Repository.GetWhere<Invoice>().OrderByDescending(r => r.Number).ToListAsync());
+            var model = new CollectionModelPOCO<IInvoice>();
+            IQueryable<Invoice> query = Repository.GetWhere<Invoice>();
 
-                if (!string.IsNullOrWhiteSpace(filter.SearchString))
-                {
-                    invoices = invoices.Where(f => f.Customer.LastName != null 
-                    && f.Customer.LastName.ToUpper()
-                        .Contains(filter.SearchString.ToUpper())
-                        || f.Customer.FirstName.ToUpper()
-                        .Contains(filter.SearchString.ToUpper()))
-                        .ToList();
-                }
-                return invoices;
-            }
-            else
+            if (!string.IsNullOrWhiteSpace(filter.SearchString))
             {
-                return Mapper.Map<IEnumerable<IInvoice>>(await Repository.GetWhere<Invoice>().ToListAsync());
+                query = query.Where(f => f.Customer.LastName != null
+                    && f.Customer.LastName.ToUpper()
+                    .Contains(filter.SearchString.ToUpper())
+                    || f.Customer.FirstName.ToUpper()
+                    .Contains(filter.SearchString.ToUpper()));
             }
+
+            model.TotalResults = await query.CountAsync();
+            model.PageNumber = filter.PageNumber;
+            model.PageSize = filter.PageSize;
+
+            model.Items = Mapper.Map<IEnumerable<IInvoice>>(
+                await query.OrderByDescending(c => c.PaymentDate)
+                    .Skip((filter.PageNumber - 1) * filter.PageSize)
+                     .Take(filter.PageSize)
+                     .ToListAsync());
+
+            return model;
         }
 
         /// <summary>

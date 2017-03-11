@@ -54,14 +54,12 @@ namespace MemberRegistration.Controllers
         /// Gets all invoices.
         /// </summary>
         /// <returns>The invoices.</returns>
-        public async Task<ActionResult> Index(string searchTerm, int pageNumber = 1, int pageSize = 15)
+        public async Task<ActionResult> Index(string searchTerm, int pageNumber = 0, int pageSize = 0)
         {
-            var invoices = Mapper.Map<IEnumerable<InvoiceViewModel>>(
-                await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize)))
-                .ToPagedList(pageNumber, pageSize);
+            var invoices = Mapper.Map<CollectionViewModel<InvoiceViewModel>>(
+              await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize)));
 
-            var invoicePagedList = new StaticPagedList<InvoiceViewModel>(invoices, invoices.GetMetaData());
-            return View(invoicePagedList);
+            return View(invoices);
         }
 
 

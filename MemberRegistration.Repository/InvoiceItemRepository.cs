@@ -43,7 +43,7 @@ namespace MemberRegistration.Repository
         /// </returns>
         public virtual IEnumerable<IInvoiceItem> Get(Guid invoiceId)
         {
-            return Mapper.Map<IEnumerable<InvoiceItemPOCO>>(Repository.GetWhere<InvoiceItem>().Where(s => s.InvoiceId == invoiceId).ToList());
+            return Mapper.Map<IEnumerable<InvoiceItemPOCO>>(Repository.GetWhere<InvoiceItem>().Where(s => s.InvoiceId == invoiceId));
         }
 
         /// <summary>

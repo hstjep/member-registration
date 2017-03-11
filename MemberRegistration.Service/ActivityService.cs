@@ -39,7 +39,7 @@ namespace MemberRegistration.Service
         /// <returns>
         /// The activities.
         /// </returns>
-        public Task<IEnumerable<IActivity>> GetAsync(Filter filter = null)
+        public Task<ICollectionModel<IActivity>> GetAsync(Filter filter)
         {
             return Repository.GetAsync(filter);
         }

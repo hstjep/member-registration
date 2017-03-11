@@ -34,6 +34,14 @@ namespace MemberRegistration.Common.Filters
         /// <value>The page size.</value>
         public int PageSize { get; set; }
 
+        /// <summary>
+        /// Gets or sets the current user identifier.
+        /// </summary>
+        /// <value>
+        /// The current user identifier.
+        /// </value>
+        public Guid CurrentUserId { get; set; }
+
         #endregion Properties
 
 

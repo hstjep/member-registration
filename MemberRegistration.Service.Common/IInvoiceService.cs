@@ -17,7 +17,7 @@ namespace MemberRegistration.Service.Common
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The invoices.</returns>
-        Task<IEnumerable<IInvoice>> GetAsync(IFilter filter = null);
+        Task<ICollectionModel<IInvoice>> GetAsync(IFilter filter);
 
         /// <summary>
         /// Gets the invoice by id asynchronously.

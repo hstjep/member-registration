@@ -17,7 +17,7 @@ namespace MemberRegistration.Service.Common
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The activities.</returns>
-        Task<IEnumerable<IActivity>> GetAsync(Filter filter = null);
+        Task<ICollectionModel<IActivity>> GetAsync(Filter filter);
 
         /// <summary>
         /// Gets the activity asynchronously.

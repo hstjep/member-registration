@@ -46,14 +46,12 @@ namespace MemberRegistration.Controllers
         /// <param name="pageSize">Size of the page.</param>
         /// <returns>The members.</returns>
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Index(string searchString, int pageNumber = 1, int pageSize = 15)
+        public async Task<ActionResult> Index(string searchString, int pageNumber = 0, int pageSize = 0)
         {
-            var members = Mapper.Map<IEnumerable<MemberViewModel>>(
-                await Service.GetAsync(new Common.Filters.Filter(searchString, pageNumber, pageSize)))
-                .ToPagedList(pageNumber, pageSize);
+            var members = Mapper.Map<CollectionViewModel<MemberViewModel>>(
+               await Service.GetAsync(new Common.Filters.Filter(searchString, pageNumber, pageSize)));
 
-            var MembersPagedList = new StaticPagedList<MemberViewModel>(members, members.GetMetaData());
-            return View(MembersPagedList);
+            return View(members);
         }
    
         /// <summary>
@@ -117,9 +115,9 @@ namespace MemberRegistration.Controllers
         /// <returns></returns>
         public async Task<ActionResult> MemberReport()
         {
-            var members = Mapper.Map<IEnumerable<MemberViewModel>>(await Service.GetAsync());
+            var members = Mapper.Map<CollectionViewModel<MemberViewModel>>(await Service.GetAsync());
             var society = Mapper.Map<IEnumerable<SocietyViewModel>>(await SocietyService.GetAsync()).FirstOrDefault();
-            return View(new Tuple<IEnumerable<MemberViewModel>, SocietyViewModel>(members, society));
+            return View(new Tuple<CollectionViewModel<MemberViewModel>, SocietyViewModel>(members, society));
         }
 
 
@@ -155,8 +153,8 @@ namespace MemberRegistration.Controllers
         /// <returns></returns>
         public async Task<JsonResult> SearchMember(string searchTerm, string currentFilter, int pageNumber = 0, int pageSize = 0)
         {
-            var Members = await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize));
-            return Json(Members.Select(k => new { id = k.Id, text = k.FullName }), JsonRequestBehavior.AllowGet);
+            var members = await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize));
+            return Json(members.Items.Select(k => new { id = k.Id, text = k.FirstName + " " + k.LastName }), JsonRequestBehavior.AllowGet);
         }
 
         #endregion Methods

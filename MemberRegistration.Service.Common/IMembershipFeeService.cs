@@ -16,7 +16,7 @@ namespace MemberRegistration.Service.Common
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The membership fees.</returns>
-        Task<IEnumerable<IMembershipFee>> GetAsync(IFilter filter = null);
+        Task<ICollectionModel<IMembershipFee>> GetAsync(IFilter filter);
 
         /// <summary>
         /// Asynchronously gets the membership fee by id.

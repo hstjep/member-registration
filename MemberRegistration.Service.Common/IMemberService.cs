@@ -18,7 +18,7 @@ namespace MemberRegistration.Service.Common
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The members.</returns>
-        Task<IEnumerable<IMember>> GetAsync(IFilter filter = null);
+        Task<ICollectionModel<IMember>> GetAsync(IFilter filter = null);
 
         /// <summary>
         /// Asynchronously gets the member by id.

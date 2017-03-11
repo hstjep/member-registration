@@ -45,26 +45,16 @@ namespace MemberRegistration.Controllers
         /// if not, gets the membership fees of the current user.
         /// </summary>
         /// <returns>The affiliation fees.</returns>
-        public async Task<ActionResult> Index(string searchTerm, int pageNumber = 1, int pageSize = 15)
+        public async Task<ActionResult> Index(string searchTerm, int pageNumber = 0, int pageSize = 2)
         {
-            if (User.IsInRole("Admin"))
-            {
-                var membershipFees = Mapper.Map<IEnumerable<MembershipFeeViewModel>>(
-                    await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize)))
-                    .ToPagedList(pageNumber, pageSize);
+            var filter = new Common.Filters.Filter(searchTerm, pageNumber, pageSize);
+            var currentUserId = User.IsInRole("Admin") ? Guid.Parse(User.Identity.GetUserId()) : Guid.Empty;
+            filter.CurrentUserId = currentUserId;
 
-                var membershipFeesPagedList = new StaticPagedList<MembershipFeeViewModel>(membershipFees, membershipFees.GetMetaData());
-                return View(membershipFeesPagedList);
-            }
-            else
-            {
-                var membershipFees = Mapper.Map<IEnumerable<MembershipFeeViewModel>>(
-                    Service.GetCurrentAsync())
-                    .ToPagedList(pageNumber, pageSize);
+            var membershipFees = Mapper.Map<CollectionViewModel<MembershipFeeViewModel>>(
+                   await Service.GetAsync(filter));
 
-                var membershipFeePagedList = new StaticPagedList<MembershipFeeViewModel>(membershipFees, membershipFees.GetMetaData());
-                return View(membershipFeePagedList);
-            }
+            return View(membershipFees);
         }
 
 

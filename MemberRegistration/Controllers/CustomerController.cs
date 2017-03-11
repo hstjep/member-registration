@@ -40,14 +40,13 @@ namespace MemberRegistration.Controllers
         /// Gets the customers.
         /// </summary>
         /// <returns>The customers.</returns>
-        public async Task<ActionResult> Index(string searchTerm, int pageNumber = 1, int pageSize = 2)
+        public async Task<ActionResult> Index(string searchTerm = "", int pageNumber = 0, int pageSize = 0)
         {
             var customers = Mapper.Map<CollectionViewModel<CustomerViewModel>>(
                 await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize)));
            
             return View(customers);
         }
-
 
         /// <summary>
         /// Gets the customer by id.

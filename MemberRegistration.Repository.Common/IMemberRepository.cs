@@ -13,7 +13,7 @@ namespace MemberRegistration.Repository.Common
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The members.</returns>
-        Task<ICollectionModel<IMember>> GetAsync(IFilter filter);
+        Task<ICollectionModel<IMember>> GetAsync(IFilter filter = null);
 
         /// <summary>
         /// Asynchronously gets the current members.

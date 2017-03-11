@@ -42,26 +42,35 @@ namespace MemberRegistration.Repository
         /// <returns>
         /// The membership fees.
         /// </returns>
-        public async Task<IEnumerable<IMembershipFee>> GetAsync(IFilter filter = null)
+        public async Task<ICollectionModel<IMembershipFee>> GetAsync(IFilter filter)
         {
-            if (filter != null)
-            {
-                var MembershipFees = Mapper.Map<List<IMembershipFee>>(await Repository.GetWhere<MembershipFee>().OrderByDescending(r => r.Member.LastName).ToListAsync());
+            var model = new CollectionModelPOCO<IMembershipFee>();
+            IQueryable<MembershipFee> query = Repository.GetWhere<MembershipFee>();
 
-                if (!string.IsNullOrWhiteSpace(filter.SearchString))
-                {
-                    MembershipFees = MembershipFees.Where(r => r.Member.FirstName.ToUpper()
+            if (filter.CurrentUserId != Guid.Empty)
+            {
+                query = query.Where(c => c.Member.Id == filter.CurrentUserId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchString))
+            {
+                query = query.Where(r => r.Member.FirstName.ToUpper()
                         .Contains(filter.SearchString.ToUpper())
                         || r.Member.LastName.ToUpper()
-                        .Contains(filter.SearchString.ToUpper()))
-                        .ToList();
-                }
-                return MembershipFees;
+                        .Contains(filter.SearchString.ToUpper()));
             }
-            else
-            {
-                return Mapper.Map<IEnumerable<IMembershipFee>>(await Repository.GetWhere<MembershipFee>().ToListAsync());
-            }
+
+            model.TotalResults = await query.CountAsync();
+            model.PageNumber = filter.PageNumber;
+            model.PageSize = filter.PageSize;
+
+            model.Items = Mapper.Map<IEnumerable<IMembershipFee>>(
+                await query.OrderByDescending(r => r.Member.LastName)
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync());
+
+            return model;
         }
 
         /// <summary>

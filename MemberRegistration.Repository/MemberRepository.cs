@@ -42,41 +42,39 @@ namespace MemberRegistration.Repository
         /// <returns>
         /// The members.
         /// </returns>
-        public virtual Task<ICollectionModel<IMember>> GetAsync(IFilter filter)
+        public virtual async Task<ICollectionModel<IMember>> GetAsync(IFilter filter = null)
         {
-            IEnumerable<IMember> members;
             var model = new CollectionModelPOCO<IMember>();
+            IQueryable<Member> query = Repository.GetWhere<Member>();
 
-            if (!string.IsNullOrWhiteSpace(filter.SearchString))
+            if (filter != null)
             {
-                members = Mapper.Map<IEnumerable<MemberPOCO>>(
-                    Repository.GetWhere<Member>()
-                    .Where(s => s.LastName.ToUpper()
+                if (!string.IsNullOrWhiteSpace(filter.SearchString))
+                {
+                    query = query.Where(s => s.LastName.ToUpper()
                         .Contains(filter.SearchString.ToUpper())
-                                        || s.FirstName.ToUpper()
-                                        .Contains(filter.SearchString.ToUpper())));
+                        || s.FirstName.ToUpper()
+                        .Contains(filter.SearchString.ToUpper()));
+                }
+
+                model.TotalResults = await query.CountAsync();
+                model.PageNumber = filter.PageNumber;
+                model.PageSize = filter.PageSize;
+
+                model.Items = Mapper.Map<IEnumerable<IMember>>(
+                    await query.OrderBy(c => c.LastName)
+                    .Skip((filter.PageNumber - 1) * filter.PageSize)
+                    .Take(filter.PageSize)
+                    .ToListAsync());
+
             } else
             {
-                members = Mapper.Map<IEnumerable<MemberPOCO>>(
-                    Repository.GetWhere<Member>());
+                model.Items = Mapper.Map<IEnumerable<IMember>>(
+                    await query.OrderBy(m => m.LastName)
+                    .ToListAsync());
             }
 
-            model.TotalResults = members.Count();
-            model.PageNumber = filter.PageNumber;
-            model.PageSize = filter.PageSize;
-
-            members = members
-                .Skip((filter.PageNumber - 1) * filter.PageSize)
-                .Take(filter.PageSize)
-                .OrderBy(c => c.LastName)
-                .ToList();
-
-            foreach (var member in members)
-            {
-                model.Items.Add(member);
-            }
-
-            return Task.FromResult<ICollectionModel<IMember>>(model);
+            return model;
         }
 
         /// <summary>

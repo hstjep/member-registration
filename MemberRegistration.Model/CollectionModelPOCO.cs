@@ -51,7 +51,7 @@ namespace MemberRegistration.Model
         /// <summary>
         /// Gets or sets the result items.
         /// </summary>
-        public List<T> Items { get; set; }
+        public IEnumerable<T> Items { get; set; }
 
         /// <summary>
         /// Gets or sets the current page number.

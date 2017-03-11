@@ -13,9 +13,11 @@ namespace MemberRegistration.App_Start
 
             AutoMapper.Mapper.CreateMap<MemberViewModel, MemberPOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<MemberViewModel, IMember>().ReverseMap();
+            AutoMapper.Mapper.CreateMap<ICollectionModel<IMember>, CollectionViewModel<MemberViewModel>>().ReverseMap();
 
             AutoMapper.Mapper.CreateMap<MembershipFeeViewModel, MembershipFeePOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<MembershipFeeViewModel, IMembershipFee>().ReverseMap();
+            AutoMapper.Mapper.CreateMap<ICollectionModel<IMembershipFee>, CollectionViewModel<MembershipFeeViewModel>>().ReverseMap();
 
             AutoMapper.Mapper.CreateMap<InvoiceIssuerViewModel, InvoiceIssuerPOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<InvoiceIssuerViewModel, IInvoiceIssuer>().ReverseMap();
@@ -35,9 +37,11 @@ namespace MemberRegistration.App_Start
 
             AutoMapper.Mapper.CreateMap<InvoiceViewModel, InvoicePOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<InvoiceViewModel, IInvoice>().ReverseMap();
+            AutoMapper.Mapper.CreateMap<ICollectionModel<IInvoice>, CollectionViewModel<InvoiceViewModel>>().ReverseMap();
 
             AutoMapper.Mapper.CreateMap<ActivityViewModel, ActivityPOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<ActivityViewModel, IActivity>().ReverseMap();
+            AutoMapper.Mapper.CreateMap<ICollectionModel<IActivity>, CollectionViewModel<ActivityViewModel>>().ReverseMap();
 
             AutoMapper.Mapper.CreateMap<InvoiceItemViewModel, InvoiceItemPOCO>().ReverseMap();
             AutoMapper.Mapper.CreateMap<InvoiceItemViewModel, IInvoiceItem>().ReverseMap();

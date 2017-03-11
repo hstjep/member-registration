@@ -62,8 +62,9 @@ namespace MemberRegistration.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.InvoiceId = new SelectList(await InvoiceService.GetAsync(), "Id", "Number", invoiceItem.InvoiceId);
-            ViewBag.MemberId = new SelectList(await MemberService.GetAsync(), "Id", "LastName", invoiceItem.MemberId);
+            // TODO: Select2 control for InvoiceId
+            //ViewBag.InvoiceId = new SelectList(await InvoiceService.GetAsync(), "Id", "Number", invoiceItem.InvoiceId);
+            //ViewBag.MemberId = new SelectList(await MemberService.GetAsync(), "Id", "LastName", invoiceItem.MemberId);
             ViewBag.ProductId = new SelectList(await ProductService.GetAsync(), "Id", "Name", invoiceItem.ProductId);
             ViewBag.Year = new SelectList(Enumerable.Range(2011, (DateTime.Today.Year - 2011) + 2), invoiceItem.Year);
             

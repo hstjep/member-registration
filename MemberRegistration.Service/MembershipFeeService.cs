@@ -38,7 +38,7 @@ namespace MemberRegistration.Service
         /// <returns>
         /// The membership fees.
         /// </returns>
-        public Task<IEnumerable<IMembershipFee>> GetAsync(IFilter filter = null)
+        public Task<ICollectionModel<IMembershipFee>> GetAsync(IFilter filter)
         {
             return Repository.GetAsync(filter);
         }

@@ -41,39 +41,30 @@ namespace MemberRegistration.Repository
         /// </summary>
         /// <param name="filter"></param>
         /// <returns>The customers.</returns>
-        public virtual Task<ICollectionModel<ICustomer>> GetAsync(IFilter filter)
+        public virtual async Task<ICollectionModel<ICustomer>> GetAsync(IFilter filter)
         {
-            IEnumerable<ICustomer> customers;
             var model = new CollectionModelPOCO<ICustomer>();
+            IQueryable<Customer> query = Repository.GetWhere<Customer>();
 
             if (!string.IsNullOrWhiteSpace(filter.SearchString))
             {
-                customers = Mapper.Map<IEnumerable<ICustomer>>(
-                    Repository.GetWhere<Customer>()
-                       .Where(c => c.FirstName.ToUpper()
-                       .Contains(filter.SearchString.ToUpper())
-                        || c.LastName.ToUpper()
-                        .Contains(filter.SearchString.ToUpper())));
-            } else {
-                customers = Mapper.Map<IEnumerable<ICustomer>>(
-                    Repository.GetWhere<Customer>());
+                  query = query.Where(c => c.FirstName.ToUpper()
+                    .Contains(filter.SearchString.ToUpper()) 
+                    || c.LastName.ToUpper()
+                    .Contains(filter.SearchString.ToUpper()));
             }
 
-            model.TotalResults = customers.Count();
+            model.TotalResults = await query.CountAsync();
             model.PageNumber = filter.PageNumber;
             model.PageSize = filter.PageSize;
 
-            customers = customers
-                .Skip((filter.PageNumber - 1) * filter.PageSize)
-                .Take(filter.PageSize)
-                .ToList();
+            model.Items = Mapper.Map<IEnumerable<ICustomer>>(
+                await query.OrderBy(c => c.LastName)
+                    .Skip((filter.PageNumber - 1) * filter.PageSize)
+                     .Take(filter.PageSize)
+                     .ToListAsync());
 
-            foreach (var customer in customers)
-            {
-                model.Items.Add(customer);
-            }
-
-            return Task.FromResult<ICollectionModel<ICustomer>>(model);
+            return model;
         }
 
         /// <summary>

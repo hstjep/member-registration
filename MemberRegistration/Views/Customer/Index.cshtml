@@ -2,6 +2,12 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    AjaxOptions ajaxOptions = new AjaxOptions { UpdateTargetId = "CustomerList", HttpMethod = "Post", InsertionMode = InsertionMode.Replace };
+
 }
 
 <h4><span class="glyphicon glyphicon-tag"></span> Kupci</h4>
@@ -17,85 +23,101 @@
 <p>
     @Html.ActionLink("Kreiraj kupca", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @*@Html.DisplayNameFor(model => model.Name)*@ Naziv
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.OIB)*@ OIB
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.Address)*@ Adresa
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.Place)*@ Mjesto
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.PostalCode)*@ Poštanski broj
-        </th>
-        <th>
-            Država
-        </th>
-        <th>
-            PDV ID
-        </th>
-        @*<th>
-            Član (Da/Ne)
-        </th>*@
-        <th></th>
-    </tr>
+<div id="CustomerList">
+@using (Ajax.BeginForm("Index", new { pageNumber = Model.PageNumber }, ajaxOptions))
+{
+        <table class="table">
+            <tr>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Name)*@ Naziv
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.OIB)*@ OIB
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Address)*@ Adresa
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Place)*@ Mjesto
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.PostalCode)*@ Poštanski broj
+                </th>
+                <th>
+                    Država
+                </th>
+                <th>
+                    PDV ID
+                </th>
+                @*<th>
+                        Član (Da/Ne)
+                    </th>*@
+                <th></th>
+            </tr>
 
-@foreach (var item in Model.Items) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OIB)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Place)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PostalCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Country)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PdvId)
-        </td>
-        @*<td>
-            @if(item.IsMember == true) {
-                <text>Da</text>
-            } else
+            @foreach (var item in Model.Items)
             {
-                <text>Ne</text>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OIB)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Place)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostalCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PdvId)
+                    </td>
+                    @*<td>
+                            @if(item.IsMember == true) {
+                                <text>Da</text>
+                            } else
+                            {
+                                <text>Ne</text>
+                            }
+                        </td>*@
+                    <td>
+                        @Html.ActionLink("Uredi", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Detalji", "Details", new { id = item.Id }) |
+                        @*@if(item.IsMember == false) {
+                            <text> |</text>*@
+                        @Html.ActionLink("Obriši", "Delete", new { id = item.Id })
+                        @*//}*@
+                    </td>
+                </tr>
             }
-        </td>*@
-        <td>
-            @Html.ActionLink("Uredi", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Detalji", "Details", new { id=item.Id }) |
-            @*@if(item.IsMember == false) { 
-            <text> |</text>*@
-            @Html.ActionLink("Obriši", "Delete", new { id=item.Id })
-                @*//}*@
-        </td>
-    </tr>
-}
 
-</table>
+        </table>
+}
+ </div>
 <nav aria-label="...">
     <ul class="pagination">
-        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+        <li class="@(@Model.HasPreviousPageSet ? "" : "hidden")">@Html.ActionLink("<", "Index", new { pageNumber = Model.PageNumber - 1 })</li>
         @for (var i = 1; i <= Model.TotalPages; i++)
         {
-            <li class="@(@Model.PageNumber == i ? "active" : "")"><a href="#">@i <span class="sr-only">(current)</span></a></li>
+            <li class="@(@Model.PageNumber == i ? "active" : "")">
+                @if (Model.PageNumber == i)
+                {
+                    <span class="current">@i</span>
+                }
+                else
+                {
+                    @Html.ActionLink(@i.ToString(), "Index", new { pageNumber = @i })
+
+                }
+            </li>
         }
-        <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+        <li class="@(@Model.HasNextPageSet ? "" : "hidden")">@Html.ActionLink(">", "Index", new { pageNumber = Model.PageNumber + 1 })</li>
     </ul>
 </nav>

@@ -50,7 +50,7 @@ namespace MemberRegistration.Service
         /// <returns>
         /// The invoices.
         /// </returns>
-        public Task<IEnumerable<IInvoice>> GetAsync(IFilter filter = null)
+        public Task<ICollectionModel<IInvoice>> GetAsync(IFilter filter)
         {
             return Repository.GetAsync(filter);
         }

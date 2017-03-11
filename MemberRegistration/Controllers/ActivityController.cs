@@ -37,14 +37,12 @@ namespace MemberRegistration.Controllers
         /// Gets the activities.
         /// </summary>
         /// <returns>The activities.</returns>
-        public async Task<ActionResult> Index(string searchTerm, int pageNumber = 1, int pageSize = 15)
+        public async Task<ActionResult> Index(string searchTerm, int pageNumber = 0, int pageSize = 0)
         {
-            var activities = Mapper.Map<IEnumerable<ActivityViewModel>>(
-               await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize)))
-               .ToPagedList(pageNumber, pageSize);
+            var activities = Mapper.Map<CollectionViewModel<ActivityViewModel>>(
+            await Service.GetAsync(new Common.Filters.Filter(searchTerm, pageNumber, pageSize)));
 
-            var activityPagedList = new StaticPagedList<ActivityViewModel>(activities, activities.GetMetaData());
-            return View(activityPagedList);
+            return View(activities);
         }
 
         /// <summary>

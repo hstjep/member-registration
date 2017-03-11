@@ -1,5 +1,5 @@
 ﻿@*@model IEnumerable<MemberRegistration.ViewModels.MemberViewModel>*@
-@model Tuple<IEnumerable<MemberRegistration.ViewModels.MemberViewModel>, MemberRegistration.ViewModels.SocietyViewModel>
+@model Tuple<MemberRegistration.ViewModels.CollectionViewModel<MemberRegistration.ViewModels.MemberViewModel>, MemberRegistration.ViewModels.SocietyViewModel>
 
 
 @{
@@ -87,7 +87,7 @@
                     </th>
                 </tr>
 
-                @foreach (var item in Model.Item1)
+                @foreach (var item in Model.Item1.Items)
             {
                     if(item.IsRemoved != true)
                     {
